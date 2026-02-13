@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('recipe_tags', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->foreignId('recipe_id')->constrained()->onDelete('cascade');
+            $table->foreignId('tag_id')->constrained()->onDelete('cascade');
+            $table->timestamp('created_at')->useCurrent();
+
+            // 同じレシピに同じタグは1つまで
+            $table->unique(['recipe_id', 'tag_id']);
         });
     }
 
