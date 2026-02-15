@@ -4,60 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ - ログイン</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f5f5f5;
-        }
-        .login-container {
-            text-align: center;
-            background: white;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .logo {
-            font-size: 48px;
-            margin-bottom: 10px;
-        }
-        h1 {
-            margin: 0 0 30px 0;
-            font-size: 32px;
-        }
-        .google-btn {
-            display: inline-flex;
-            align-items: center;
-            background: white;
-            border: 1px solid #ddd;
-            padding: 12px 24px;
-            border-radius: 4px;
-            cursor: pointer;
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            transition: box-shadow 0.2s;
-        }
-        .google-btn:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-        .google-icon {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-        }
-    </style>
+    @vite(['resources/css/common.css', 'resources/css/login.css'])
 </head>
 <body>
     <div class="login-container">
         <div class="logo">🍳</div>
         <h1>mogu+</h1>
         <p>レシピを管理しよう</p>
-        
+
         <a href="/auth/google" class="google-btn">
             <svg class="google-icon" viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -67,7 +21,7 @@
             </svg>
             Googleでログイン
         </a>
-        
+
         @if(session('error'))
             <p style="color: red; margin-top: 20px;">{{ session('error') }}</p>
         @endif
