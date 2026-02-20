@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ | レシピ一覧</title>
     @vite(['resources/css/common.css', 'resources/css/recipes.css'])
 </head>
+
 <body>
     <!-- ヘッダー -->
     <div class="header">
@@ -27,26 +29,27 @@
 
     <!-- レシピ一覧 または 空の状態 -->
     @if($recipes->count() > 0)
-        <div class="recipe-grid">
-            @foreach($recipes as $recipe)
-                <div class="recipe-card">
-                    @if($recipe->image_path)
-                        <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="recipe-image">
-                    @else
-                        <div class="no-image">画像なし</div>
-                    @endif
-                </div>
-            @endforeach
+    <div class="recipe-grid">
+        @foreach($recipes as $recipe)
+        <div class="recipe-card">
+            @if($recipe->image_path) <!-- あとからCloudinaryに変更 -->
+            <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="recipe-image">
+            @else
+            <div class="no-image">画像なし</div>
+            @endif
         </div>
+        @endforeach
+    </div>
     @else
-        <div class="empty-state">
-            <div class="empty-state-icon">📝</div>
-            <div class="empty-state-text">レシピがありません</div>
-            <div class="empty-state-subtext">右下の「+」ボタンから追加しましょう</div>
-        </div>
+    <div class="empty-state">
+        <div class="empty-state-icon">📝</div>
+        <div class="empty-state-text">レシピがありません</div>
+        <div class="empty-state-subtext">右下の「+」ボタンから追加しましょう</div>
+    </div>
     @endif
 
     <!-- 追加ボタン -->
-    <a href="#" class="add-button">+</a>
+    <a href="{{ route('recipes.create') }}" class="add-button">+</a>
 </body>
+
 </html>

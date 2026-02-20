@@ -23,10 +23,9 @@ Route::middleware(['auth'])->group(function () {
     // レシピ一覧ページ
     Route::get('/recipes', [RecipeController::class, 'index'])->name('recipes.index');
 
-    // ↓ これから作るページは全部ここに追加していく！
-    // 例: レシピ追加ページ
-    // Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
+    // レシピ追加ページ（入力フォーム表示）
+    Route::get('/recipes/create', [RecipeController::class, 'create'])->name('recipes.create');
 
-    // 例: レシピ詳細ページ
-    // Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+    // レシピ保存処理（フォーム送信時）
+    Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
 });
