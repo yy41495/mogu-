@@ -5,20 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tag extends Model
+class Step extends Model
 {
     use HasFactory;
 
     public $timestamps = false;
 
     protected $fillable = [
-        'name',
-        'color',
+        'recipe_id',
+        'step_number',
+        'description',
     ];
 
     // リレーション
-    public function recipes()
+    public function recipe()
     {
-        return $this->belongsToMany(Recipe::class, 'recipe_tags');
+        return $this->belongsTo(Recipe::class);
     }
 }

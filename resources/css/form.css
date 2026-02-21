@@ -262,3 +262,250 @@ textarea {
 .save-btn:hover {
     background-color: #333;
 }
+
+/* ========================================
+   モーダル（タグ選択）
+======================================== */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+.modal-body {
+    padding: 20px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+}
+
+/* タグ検索 */
+.tag-search {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+/* 新規タグエリア */
+.new-tag-area {
+    margin-bottom: 16px;
+}
+
+.new-tag-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border: 2px dashed #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.new-tag-btn:hover {
+    background-color: #ebebeb;
+}
+
+/* 新規タグフォーム */
+.new-tag-form {
+    padding: 16px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.new-tag-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+/* 色選択 */
+.color-picker {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.color-btn {
+    width: 40px;
+    height: 40px;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.color-btn:hover {
+    border-color: #999;
+}
+
+.color-btn.selected {
+    border-color: #000;
+}
+
+.new-tag-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.cancel-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.cancel-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.add-tag-btn {
+    flex: 1;
+    padding: 10px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-tag-btn:hover {
+    background-color: #333;
+}
+
+/* タグセクション */
+.tag-section {
+    margin-bottom: 16px;
+}
+
+.tag-section h4 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #666;
+}
+
+/* タグリスト */
+.tag-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.tag-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.tag-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.tag-label {
+    padding: 8px 16px;
+    background-color: #e0e0e0;
+    border-radius: 16px;
+    font-size: 14px;
+    flex: 1;
+}
+
+/* モーダルフッターボタン */
+.clear-btn {
+    padding: 10px 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.clear-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.apply-btn {
+    padding: 10px 20px;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.apply-btn:hover {
+    background-color: #333;
+}

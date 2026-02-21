@@ -10,7 +10,8 @@ export default defineConfig({
                 'resources/css/login.css',
                 'resources/css/recipes.css',
                 'resources/css/form.css',
-                'resources/js/app.js'
+                'resources/js/app.js',
+                'resources/js/recipe-form.js',
             ],
             refresh: true,
         }),
