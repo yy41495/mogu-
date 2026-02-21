@@ -15,7 +15,16 @@
             <div class="logo-icon">ロゴ</div>
             <div class="logo-text">mogu+</div>
         </div>
-        <div class="user-icon"></div>
+        <div class="user-icon" style="cursor: pointer;">👤</div>
+
+        <!-- ユーザーメニュー -->
+        <div id="userMenu" class="user-menu" style="display: none;">
+            <div class="user-name">{{ Auth::user()->name }}</div>
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" class="logout-btn">ログアウト</button>
+            </form>
+        </div>
     </div>
 
     <!-- 検索バー -->
@@ -31,13 +40,13 @@
     @if($recipes->count() > 0)
     <div class="recipe-grid">
         @foreach($recipes as $recipe)
-        <div class="recipe-card">
-            @if($recipe->image_path) <!-- あとからCloudinaryに変更 -->
+        <a href="{{ route('recipes.show', $recipe->id) }}" class="recipe-card">
+            @if($recipe->image_path)
             <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="recipe-image">
             @else
             <div class="no-image">画像なし</div>
             @endif
-        </div>
+        </a>
         @endforeach
     </div>
     @else
@@ -50,6 +59,8 @@
 
     <!-- 追加ボタン -->
     <a href="{{ route('recipes.create') }}" class="add-button">+</a>
+
+    @vite(['resources/js/index.js'])
 </body>
 
 </html>

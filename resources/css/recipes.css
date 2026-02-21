@@ -94,3 +94,53 @@ body {
 .empty-state-subtext {
     font-size: 14px;
 }
+
+/* レシピカードをリンクにする */
+.recipe-card {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.recipe-card:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    transition: all 0.2s;
+}
+
+/* ユーザーメニュー */
+.user-menu {
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    padding: 12px;
+    min-width: 180px;
+    z-index: 200;
+}
+
+.user-name {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #e0e0e0;
+}

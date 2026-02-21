@@ -9,6 +9,7 @@ use App\Models\Ingredient;           // ← 追加
 use App\Models\RecipeIngredient;     // ← 追加
 use App\Models\Step;                 // ← 追加
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RecipeController extends Controller
 {
@@ -60,10 +61,21 @@ class RecipeController extends Controller
             'source_url' => $validated['source_url'] ?? null,
         ]);
 
-        // 画像がアップロードされていたら保存
+        // 画像がアップロードされていたら Cloudinary に保存
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('recipes', 'public');
-            $recipe->image_path = $path;
+            $uploadedFile = $request->file('image');
+            $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
+                'folder' => 'mogu-plus/recipes',
+                'transformation' => [
+                    'width' => 1200,
+                    'height' => 1200,
+                    'crop' => 'limit',
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto'
+                ]
+            ]);
+
+            $recipe->image_path = $uploadResult->getSecurePath();
             $recipe->save();
         }
 
@@ -78,6 +90,132 @@ class RecipeController extends Controller
 
         // レシピ一覧ページにリダイレクト
         return redirect()->route('recipes.index')->with('success', 'レシピを追加しました！');
+    }
+
+    /**
+     * レシピ詳細ページを表示
+     */
+    public function show($id)
+    {
+        // レシピを取得（ログインユーザーのものだけ）
+        $recipe = Recipe::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->with(['tags', 'recipeIngredients.ingredient', 'steps'])
+            ->firstOrFail();
+
+        return view('recipes.show', compact('recipe'));
+    }
+
+    /**
+     * レシピ編集ページを表示
+     */
+    public function edit($id)
+    {
+        // レシピを取得（ログインユーザーのものだけ）
+        $recipe = Recipe::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->with(['tags', 'recipeIngredients.ingredient', 'steps'])
+            ->firstOrFail();
+
+        // 全てのタグを取得
+        $tags = Tag::all();
+
+        return view('recipes.edit', compact('recipe', 'tags'));
+    }
+
+    /**
+     * レシピを更新
+     */
+    public function update(Request $request, $id)
+    {
+        // レシピを取得（ログインユーザーのものだけ）
+        $recipe = Recipe::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // バリデーション
+        $validated = $request->validate([
+            'title' => 'required|max:255',
+            'memo' => 'nullable',
+            'source_url' => 'nullable|url',
+            'image' => 'nullable|image|max:5120',
+            'tags' => 'nullable|array',
+            'new_tags' => 'nullable|array',
+            'ingredients' => 'nullable|array',
+            'steps' => 'nullable|array',
+        ]);
+
+        // レシピを更新
+        $recipe->update([
+            'title' => $validated['title'],
+            'memo' => $validated['memo'] ?? null,
+            'source_url' => $validated['source_url'] ?? null,
+        ]);
+
+        // 画像がアップロードされていたら Cloudinary に保存
+        if ($request->hasFile('image')) {
+            // 古い画像を Cloudinary から削除
+            if ($recipe->image_path && str_contains($recipe->image_path, 'cloudinary.com')) {
+                $publicId = $this->getPublicIdFromUrl($recipe->image_path);
+                if ($publicId) {
+                    Cloudinary::destroy($publicId);
+                }
+            }
+
+            // 新しい画像をアップロード
+            $uploadedFile = $request->file('image');
+            $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
+                'folder' => 'mogu-plus/recipes',
+                'transformation' => [
+                    'width' => 1200,
+                    'height' => 1200,
+                    'crop' => 'limit',
+                    'quality' => 'auto',
+                    'fetch_format' => 'auto'
+                ]
+            ]);
+
+            $recipe->image_path = $uploadResult->getSecurePath();
+            $recipe->save();
+        }
+
+        // 既存のタグ・材料・手順を削除
+        $recipe->tags()->detach();
+        $recipe->recipeIngredients()->delete();
+        $recipe->steps()->delete();
+
+        // 新しいデータを保存
+        $this->saveTags($recipe, $request);
+        $this->saveIngredients($recipe, $request);
+        $this->saveSteps($recipe, $request);
+
+        // レシピ詳細ページにリダイレクト
+        return redirect()->route('recipes.show', $recipe->id)->with('success', 'レシピを更新しました！');
+    }
+
+    /**
+     * レシピを削除
+     */
+    public function destroy($id)
+    {
+        // レシピを取得（ログインユーザーのものだけ）
+        $recipe = Recipe::where('id', $id)
+            ->where('user_id', Auth::id())
+            ->firstOrFail();
+
+        // Cloudinary から画像を削除
+        if ($recipe->image_path && str_contains($recipe->image_path, 'cloudinary.com')) {
+            $publicId = $this->getPublicIdFromUrl($recipe->image_path);
+            if ($publicId) {
+                Cloudinary::destroy($publicId);
+            }
+        }
+
+        // レシピを削除（ソフトデリート）
+        $recipe->delete();
+
+        // レシピ一覧ページにリダイレクト
+        return redirect()->route('recipes.index')->with('success', 'レシピを削除しました！');
     }
 
     /**
@@ -166,5 +304,20 @@ class RecipeController extends Controller
 
             $stepNumber++;
         }
+    }
+
+    /**
+     * Cloudinary の URL から public_id を取得
+     */
+    private function getPublicIdFromUrl($url)
+    {
+        // https://res.cloudinary.com/xxx/image/upload/v123456/mogu-plus/recipes/abc123.jpg
+        // → mogu-plus/recipes/abc123
+
+        $pattern = '/\/upload\/(?:v\d+\/)?(.+)\.\w+$/';
+        if (preg_match($pattern, $url, $matches)) {
+            return $matches[1];
+        }
+        return null;
     }
 }

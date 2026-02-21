@@ -13,6 +13,9 @@ Route::get('/', function () {
 Route::get('/auth/google', [GoogleController::class, 'redirectToGoogle']);
 Route::get('/auth/google/callback', [GoogleController::class, 'handleGoogleCallback']);
 
+// ログアウト
+Route::post('/logout', [GoogleController::class, 'logout'])->name('logout');
+
 // ログインページ
 Route::get('/login', function () {
     return view('login');
@@ -28,4 +31,16 @@ Route::middleware(['auth'])->group(function () {
 
     // レシピ保存処理（フォーム送信時）
     Route::post('/recipes', [RecipeController::class, 'store'])->name('recipes.store');
+
+    // レシピ詳細ページ
+    Route::get('/recipes/{id}', [RecipeController::class, 'show'])->name('recipes.show');
+
+    // レシピ編集ページ
+    Route::get('/recipes/{id}/edit', [RecipeController::class, 'edit'])->name('recipes.edit');
+
+    // レシピ更新処理
+    Route::put('/recipes/{id}', [RecipeController::class, 'update'])->name('recipes.update');
+
+    // レシピ削除処理
+    Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
 });

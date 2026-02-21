@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Http\Request;
 
 class GoogleController extends Controller
 {
@@ -45,5 +46,17 @@ class GoogleController extends Controller
             // エラーが起きたらログイン画面に戻る
             return redirect('/login')->with('error', 'ログインに失敗しました');
         }
+    }
+
+    /**
+     * ログアウト
+     */
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect('/login')->with('success', 'ログアウトしました');
     }
 }
