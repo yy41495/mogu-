@@ -42,7 +42,7 @@
         @foreach($recipes as $recipe)
         <a href="{{ route('recipes.show', $recipe->id) }}" class="recipe-card">
             @if($recipe->image_path)
-            <img src="{{ asset('storage/' . $recipe->image_path) }}" alt="{{ $recipe->title }}" class="recipe-image">
+            <img src="{{ $recipe->image_path }}" alt="{{ $recipe->title }}" class="recipe-image">
             @else
             <div class="no-image">画像なし</div>
             @endif
