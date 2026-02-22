@@ -16,7 +16,7 @@ body {
 
 /* ヘッダー（レシピ一覧などで使う） */
 .header {
-    background-color: #fff;
+    background-color: #ee7800;
     padding: 16px 20px;
     display: flex;
     align-items: center;
@@ -25,6 +25,8 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
+    /* user-menuのposition:absoluteの基準点にする */
+    position: sticky;
 }
 
 .header-left {
@@ -45,8 +47,8 @@ body {
 }
 
 .logo-text {
-    font-size: 24px;
-    font-weight: 600;
+    width: 40px;
+
 }
 
 .user-icon {
@@ -81,14 +83,55 @@ body {
 .add-button:hover {
     background-color: #333;
 }
-/* ロゴ画像 */
-.logo-icon {
+/* ========================================
+   Lucideアイコン共通設定
+======================================== */
+i[data-lucide] {
+    width: 20px;
+    height: 20px;
+    stroke-width: 1.8;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* ユーザーアイコンボタン */
+.user-icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
     width: 40px;
     height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.user-icon-btn i[data-lucide] {
+    width: 32px;
+    height: 32px;
+}
+
+/* 戻るリンクのアイコン */
+.back-link i[data-lucide] {
+    width: 18px;
+    height: 18px;
+}
+
+/* ロゴ画像 */
+.logo-icon-img {
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
 .logo-text-img {
-    height: 28px;
+    height: 24px;
     object-fit: contain;
+}
+
+/* hidden */
+.hidden {
+    display: none !important;
 }

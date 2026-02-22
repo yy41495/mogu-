@@ -514,20 +514,38 @@ textarea {
 .apply-btn:hover {
     background-color: #333;
 }
-/* ========================================
-   ユーティリティ
-======================================== */
+/* 画像アップロードアイコン */
+.upload-icon-svg {
+    width: 48px !important;
+    height: 48px !important;
+    color: #999;
+    margin-bottom: 8px;
+}
 
+/* 削除ボタンのアイコン */
+.delete-btn i[data-lucide] {
+    width: 18px;
+    height: 18px;
+    color: white;
+}
+
+/* モーダル閉じるボタンのアイコン */
+.modal-close i[data-lucide] {
+    width: 24px;
+    height: 24px;
+}
+
+/* hidden-input */
+.hidden-input {
+    display: none !important;
+}
+
+/* hidden */
 .hidden {
     display: none !important;
 }
 
-/* ファイル選択inputを確実に隠す */
-input[type="file"] {
-    display: none !important;
-}
-
-/* 画像プレビュー */
+/* preview-img */
 .preview-img {
     width: 100%;
     height: 100%;
@@ -535,7 +553,7 @@ input[type="file"] {
     border-radius: 8px;
 }
 
-/* カラーボタン（色はCSSで定義） */
+/* カラーボタン */
 .color-btn--pink   { background-color: #ffcdd2; }
 .color-btn--yellow { background-color: #fff9c4; }
 .color-btn--green  { background-color: #c8e6c9; }

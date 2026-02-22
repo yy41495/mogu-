@@ -6,6 +6,7 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ | レシピ一覧</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/common.css', 'resources/css/recipes.css'])
 </head>
 
@@ -13,13 +14,15 @@
     <!-- ヘッダー -->
     <div class="header">
         <div class="header-left">
-            <img src="/images/logo-icon.png" alt="mogu+" class="logo-icon">
+            <img src="/images/logo-icon.png" alt="mogu+" class="logo-icon-img">
             <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
         </div>
-        <div class="user-icon" style="cursor: pointer;">👤</div>
+        <button type="button" class="user-icon-btn" id="userIconBtn">
+            <i data-lucide="circle-user-round"></i>
+        </button>
 
         <!-- ユーザーメニュー -->
-        <div id="userMenu" class="user-menu" style="display: none;">
+        <div id="userMenu" class="user-menu hidden">
             <div class="user-name">{{ Auth::user()->name }}</div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
@@ -32,9 +35,11 @@
     <div class="search-bar">
         <form action="{{ route('recipes.index') }}" method="GET" id="searchForm">
             <div class="search-container">
-                <span class="search-icon">🔍</span>
+                <i data-lucide="search" class="search-icon"></i>
                 <input type="text" name="keyword" class="search-input" placeholder="キーワードで検索（タイトル・材料・タグ）" value="{{ request('keyword') }}">
-                <button type="button" class="filter-icon" onclick="toggleFilterModal()">⚙</button>
+                <button type="button" class="filter-btn" onclick="toggleFilterModal()">
+                    <i data-lucide="sliders-horizontal"></i>
+                </button>
             </div>
 
             <!-- 選択中のタグ表示 -->
@@ -50,11 +55,13 @@
             @endif
 
             <!-- タグフィルターモーダル -->
-            <div id="filterModal" class="modal" style="display: none;">
+            <div id="filterModal" class="modal hidden">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h3>タグでフィルター</h3>
-                        <button type="button" class="modal-close" onclick="closeFilterModal()">×</button>
+                        <button type="button" class="modal-close" onclick="closeFilterModal()">
+                            <i data-lucide="x"></i>
+                        </button>
                     </div>
 
                     <div class="modal-body">
@@ -99,9 +106,12 @@
     @endif
 
     <!-- 追加ボタン -->
-    <a href="{{ route('recipes.create') }}" class="add-button">+</a>
+    <a href="{{ route('recipes.create') }}" class="add-button">
+        <i data-lucide="plus"></i>
+    </a>
 
     @vite(['resources/js/index.js'])
+    <script>lucide.createIcons();</script>
 </body>
 
 </html>

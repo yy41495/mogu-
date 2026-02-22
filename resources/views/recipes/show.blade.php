@@ -6,20 +6,23 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $recipe->title }} | mogu+</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/common.css', 'resources/css/recipes.css', 'resources/css/recipe-detail.css'])
 </head>
 
 <body>
     <!-- ヘッダー -->
     <div class="header">
-        <a href="{{ route('recipes.index') }}" class="back-link">← 一覧に戻る</a>
+        <a href="{{ route('recipes.index') }}" class="back-link">
+            <i data-lucide="arrow-left"></i> 一覧に戻る
+        </a>
         <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
         <div></div>
     </div>
 
-    <!-- 画面スリープ防止ボタン（右上固定） -->
+    <!-- 画面スリープ防止ボタン -->
     <button type="button" class="sleep-prevent-btn" id="sleepPreventBtn" title="画面スリープ防止">
-        ☀️
+        <i data-lucide="sun"></i>
     </button>
 
     <!-- メイン画像 -->
@@ -31,10 +34,8 @@
 
     <!-- レシピ情報 -->
     <div class="recipe-content">
-        <!-- タイトル -->
         <h1 class="recipe-title">{{ $recipe->title }}</h1>
 
-        <!-- タグ -->
         @if($recipe->tags->count() > 0)
         <div class="recipe-tags">
             @foreach($recipe->tags as $tag)
@@ -45,7 +46,6 @@
         </div>
         @endif
 
-        <!-- 自分用メモ -->
         @if($recipe->memo)
         <div class="recipe-section">
             <h2 class="section-title">自分用メモ</h2>
@@ -53,7 +53,6 @@
         </div>
         @endif
 
-        <!-- 材料・分量 -->
         @if($recipe->recipeIngredients->count() > 0)
         <div class="recipe-section">
             <h2 class="section-title">材料・分量</h2>
@@ -68,7 +67,6 @@
         </div>
         @endif
 
-        <!-- 手順 -->
         @if($recipe->steps->count() > 0)
         <div class="recipe-section">
             <h2 class="section-title">手順</h2>
@@ -83,7 +81,6 @@
         </div>
         @endif
 
-        <!-- 参考URL -->
         @if($recipe->source_url)
         <div class="recipe-section">
             <h2 class="section-title">参考URL</h2>
@@ -96,10 +93,10 @@
         <!-- 編集・削除ボタン -->
         <div class="action-buttons">
             <a href="{{ route('recipes.edit', $recipe->id) }}" class="edit-btn">
-                ✏️ 編集
+                <i data-lucide="square-pen"></i> 編集
             </a>
             <button type="button" class="delete-btn" onclick="openDeleteModal()">
-                🗑 削除
+                <i data-lucide="trash-2"></i> 削除
             </button>
         </div>
     </div>
@@ -107,7 +104,7 @@
     @vite(['resources/js/sleep.js'])
 
     <!-- 削除確認モーダル -->
-    <div id="deleteModal" class="delete-modal" style="display: none;">
+    <div id="deleteModal" class="delete-modal hidden">
         <div class="delete-modal-content">
             <p class="delete-modal-title">本当に削除しますか？</p>
             <p class="delete-modal-desc">この操作は取り消せません</p>
@@ -118,18 +115,20 @@
         </div>
     </div>
 
-    <!-- 削除フォーム（非表示） -->
-    <form id="deleteForm" action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" style="display: none;">
+    <form id="deleteForm" action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" class="hidden">
         @csrf
         @method('DELETE')
     </form>
 
     <script>
+        lucide.createIcons();
         function openDeleteModal() {
+            document.getElementById('deleteModal').classList.remove('hidden');
             document.getElementById('deleteModal').style.display = 'flex';
         }
         function closeDeleteModal() {
-            document.getElementById('deleteModal').style.display = 'none';
+            document.getElementById('deleteModal').classList.add('hidden');
+            document.getElementById('deleteModal').style.display = '';
         }
         function submitDelete() {
             document.getElementById('deleteForm').submit();

@@ -6,19 +6,22 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ | レシピ編集</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/common.css', 'resources/css/recipes.css', 'resources/css/form.css'])
 </head>
 
 <body>
     <!-- ヘッダー -->
     <div class="header">
-        <a href="{{ route('recipes.show', $recipe->id) }}" class="back-link">← 詳細に戻る</a>
+        <a href="{{ route('recipes.show', $recipe->id) }}" class="back-link">
+            <i data-lucide="arrow-left"></i> 詳細に戻る
+        </a>
         <div class="logo-text">レシピ編集</div>
         <div></div>
     </div>
 
-    <!-- フォーム -->
-    <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data" class="recipe-form" onsubmit="return validateForm(event)"
+    <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data"
+        class="recipe-form" onsubmit="return validateForm(event)"
         data-ingredient-count="{{ $recipe->recipeIngredients->count() > 0 ? $recipe->recipeIngredients->count() : 1 }}"
         data-step-count="{{ $recipe->steps->count() > 0 ? $recipe->steps->count() : 1 }}">
         @csrf
@@ -27,19 +30,19 @@
         <!-- 画像アップロード -->
         <div class="form-group">
             <label class="image-upload-area" for="image">
-                <input type="file" id="image" name="image" accept="image/*" style="display: none;">
+                <input type="file" id="image" name="image" accept="image/*" class="hidden-input">
                 <div class="image-placeholder" id="image-preview">
                     @if($recipe->image_path)
-                    <img src="{{ $recipe->image_path }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+                    <img src="{{ $recipe->image_path }}" class="preview-img">
                     @else
-                    <span class="upload-icon">📷</span>
+                    <i data-lucide="image" class="upload-icon-svg"></i>
                     <span class="upload-text">タップして画像を選択</span>
                     @endif
                 </div>
             </label>
         </div>
 
-        <!-- タイトル（必須） -->
+        <!-- タイトル -->
         <div class="form-group">
             <label for="title">タイトル <span class="required">*必須</span></label>
             <input type="text" id="title" name="title" placeholder="タイトルを入力" required value="{{ old('title', $recipe->title) }}">
@@ -55,7 +58,7 @@
                 <button type="button" class="tag-select-btn" id="tagSelectBtn">タグを選択</button>
                 <div id="selectedTags" class="selected-tags">
                     @foreach($recipe->tags as $tag)
-                    <span class="tag-badge" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">
+                    <span class="tag-badge" id="tag_badge_{{ $tag->id }}" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">
                         {{ $tag->name }}
                         <span class="tag-remove" onclick="removeTag('{{ $tag->id }}')">×</span>
                     </span>
@@ -75,14 +78,18 @@
                 <div class="ingredient-item">
                     <input type="text" name="ingredients[{{ $index }}][name]" placeholder="材料名" class="ingredient-input" value="{{ $recipeIngredient->ingredient->name }}">
                     <input type="text" name="ingredients[{{ $index }}][quantity]" placeholder="分量" class="quantity-input" value="{{ $recipeIngredient->quantity }}">
-                    <button type="button" class="delete-btn" onclick="removeItem(this)">🗑</button>
+                    <button type="button" class="delete-btn" onclick="removeItem(this)">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
                 @endforeach
                 @else
                 <div class="ingredient-item">
                     <input type="text" name="ingredients[0][name]" placeholder="材料名" class="ingredient-input">
                     <input type="text" name="ingredients[0][quantity]" placeholder="分量" class="quantity-input">
-                    <button type="button" class="delete-btn" onclick="removeItem(this)">🗑</button>
+                    <button type="button" class="delete-btn" onclick="removeItem(this)">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
                 @endif
             </div>
@@ -98,14 +105,18 @@
                 <div class="step-item">
                     <span class="step-number">{{ $step->step_number }}</span>
                     <input type="text" name="steps[{{ $index }}][description]" placeholder="手順を入力" class="step-input" value="{{ $step->description }}">
-                    <button type="button" class="delete-btn" onclick="removeItem(this)">🗑</button>
+                    <button type="button" class="delete-btn" onclick="removeItem(this)">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
                 @endforeach
                 @else
                 <div class="step-item">
                     <span class="step-number">1</span>
                     <input type="text" name="steps[0][description]" placeholder="手順を入力" class="step-input">
-                    <button type="button" class="delete-btn" onclick="removeItem(this)">🗑</button>
+                    <button type="button" class="delete-btn" onclick="removeItem(this)">
+                        <i data-lucide="trash-2"></i>
+                    </button>
                 </div>
                 @endif
             </div>
@@ -123,7 +134,6 @@
             <input type="url" id="source_url" name="source_url" placeholder="https://..." value="{{ old('source_url', $recipe->source_url) }}">
         </div>
 
-        <!-- 保存ボタン -->
         <button type="submit" class="save-btn">更新</button>
     </form>
 
@@ -132,37 +142,31 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3>タグを選択</h3>
-                <button type="button" class="modal-close" onclick="closeTagModal()">×</button>
+                <button type="button" class="modal-close" onclick="closeTagModal()">
+                    <i data-lucide="x"></i>
+                </button>
             </div>
-
             <div class="modal-body">
-                <!-- タグ検索 -->
                 <input type="text" id="tagSearch" placeholder="タグを検索" class="tag-search">
-
-                <!-- 新規タグ追加 -->
                 <div class="new-tag-area">
                     <button type="button" class="new-tag-btn" onclick="showNewTagForm()">+ 新規タグを追加</button>
                 </div>
-
-                <!-- 新規タグ登録フォーム（最初は非表示） -->
-                <div id="newTagForm" class="new-tag-form" style="display: none;">
+                <div id="newTagForm" class="new-tag-form hidden">
                     <input type="text" id="newTagName" placeholder="新規登録タグ名" class="new-tag-input">
                     <div class="color-picker">
-                        <button type="button" class="color-btn" data-color="#ffcdd2" style="background-color: #ffcdd2;"></button>
-                        <button type="button" class="color-btn" data-color="#fff9c4" style="background-color: #fff9c4;"></button>
-                        <button type="button" class="color-btn" data-color="#c8e6c9" style="background-color: #c8e6c9;"></button>
-                        <button type="button" class="color-btn" data-color="#bbdefb" style="background-color: #bbdefb;"></button>
-                        <button type="button" class="color-btn" data-color="#e1bee7" style="background-color: #e1bee7;"></button>
-                        <button type="button" class="color-btn" data-color="#d7ccc8" style="background-color: #d7ccc8;"></button>
-                        <button type="button" class="color-btn" data-color="#e0e0e0" style="background-color: #e0e0e0;"></button>
+                        <button type="button" class="color-btn color-btn--pink"   data-color="#ffcdd2"></button>
+                        <button type="button" class="color-btn color-btn--yellow" data-color="#fff9c4"></button>
+                        <button type="button" class="color-btn color-btn--green"  data-color="#c8e6c9"></button>
+                        <button type="button" class="color-btn color-btn--blue"   data-color="#bbdefb"></button>
+                        <button type="button" class="color-btn color-btn--purple" data-color="#e1bee7"></button>
+                        <button type="button" class="color-btn color-btn--brown"  data-color="#d7ccc8"></button>
+                        <button type="button" class="color-btn color-btn--gray"   data-color="#e0e0e0"></button>
                     </div>
                     <div class="new-tag-actions">
                         <button type="button" class="cancel-btn" onclick="hideNewTagForm()">キャンセル</button>
                         <button type="button" class="add-tag-btn" onclick="addNewTag()">追加</button>
                     </div>
                 </div>
-
-                <!-- すべてのタグ -->
                 <div class="tag-section">
                     <h4>すべてのタグ</h4>
                     <div id="allTags" class="tag-list">
@@ -175,7 +179,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="modal-footer">
                 <button type="button" class="clear-btn" onclick="clearSelectedTags()">クリア</button>
                 <button type="button" class="apply-btn" onclick="applyTags()">適用</button>
@@ -184,6 +187,6 @@
     </div>
 
     @vite(['resources/js/recipe-form.js'])
-
+    <script>lucide.createIcons();</script>
 </body>
 </html>

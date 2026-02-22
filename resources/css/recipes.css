@@ -110,8 +110,8 @@ body {
 
 /* ユーザーメニュー */
 .user-menu {
-    position: absolute;
-    top: 60px;
+    position: fixed;
+    top: 68px;
     right: 20px;
     background-color: white;
     border-radius: 8px;
@@ -223,4 +223,22 @@ body {
     color: #666;
     cursor: pointer;
     padding: 4px;
+}
+
+/* フィルターボタン（Lucideアイコン用） */
+.filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+/* 追加ボタンのアイコン */
+.add-button i[data-lucide] {
+    width: 32px;
+    height: 32px;
+    color: white;
 }
