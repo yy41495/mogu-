@@ -17,3 +17,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// フィルターモーダルの開閉
+function toggleFilterModal() {
+    const modal = document.getElementById('filterModal');
+    modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+}
+
+function closeFilterModal() {
+    document.getElementById('filterModal').style.display = 'none';
+}
+
+// フィルタークリア
+function clearFilters() {
+    const form = document.getElementById('searchForm');
+    const checkboxes = form.querySelectorAll('input[name="tags[]"]');
+    checkboxes.forEach(cb => cb.checked = false);
+    form.submit();
+}
+
+function clearTagFilters() {
+    const checkboxes = document.querySelectorAll('input[name="tags[]"]');
+    checkboxes.forEach(cb => cb.checked = false);
+}
+
+// グローバルに公開
+window.toggleFilterModal = toggleFilterModal;
+window.closeFilterModal = closeFilterModal;
+window.clearFilters = clearFilters;
+window.clearTagFilters = clearTagFilters;

@@ -13,17 +13,48 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RecipeController extends Controller
 {
-    // レシピ一覧ページ
-    public function index()
+    /**
+     * レシピ一覧ページを表示
+     */
+    public function index(Request $request)
     {
-        // ログインしているユーザーのレシピだけを取得
-        // 新しい順に並べる
-        $recipes = Recipe::where('user_id', Auth::id()) //とってくるデータの条件
-            ->orderBy('created_at', 'desc') //表示する条件
-            ->get(); //実行命令
+        // ログインしているユーザーのレシピを取得
+        $query = Recipe::where('user_id', Auth::id())
+            ->with(['tags', 'recipeIngredients.ingredient']);
 
-        // recipes/index.blade.php に $recipes を渡す
-        return view('recipes.index', compact('recipes'));
+        // キーワード検索
+        if ($request->filled('keyword')) {
+            $keyword = $request->keyword;
+            $query->where(function ($q) use ($keyword) {
+                // タイトル・メモで検索
+                $q->where('title', 'ILIKE', "%{$keyword}%")
+                    ->orWhere('memo', 'ILIKE', "%{$keyword}%")
+                    // タグで検索
+                    ->orWhereHas('tags', function ($tagQuery) use ($keyword) {
+                        $tagQuery->where('name', 'ILIKE', "%{$keyword}%");
+                    })
+                    // 材料で検索
+                    ->orWhereHas('recipeIngredients.ingredient', function ($ingredientQuery) use ($keyword) {
+                        $ingredientQuery->where('name', 'ILIKE', "%{$keyword}%");
+                    });
+            });
+        }
+
+        // タグでフィルター
+        if ($request->filled('tags')) {
+            $tagIds = $request->tags;
+            $query->whereHas('tags', function ($tagQuery) use ($tagIds) {
+                $tagQuery->whereIn('tags.id', $tagIds);
+            });
+        }
+
+        // 新しい順に並べる
+        $recipes = $query->orderBy('created_at', 'desc')->get();
+
+        // 全てのタグを取得（フィルター用）
+        $allTags = Tag::all();
+
+        return view('recipes.index', compact('recipes', 'allTags'));
     }
 
     //レシピ追加ページ

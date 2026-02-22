@@ -144,3 +144,42 @@ body {
 .logout-btn:hover {
     background-color: #e0e0e0;
 }
+
+/* 検索フォーム */
+.search-bar form {
+    width: 100%;
+}
+
+.search-input {
+    width: 100%;
+}
+
+/* 選択中のフィルター */
+.selected-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 20px 0;
+    align-items: center;
+}
+
+.filter-badge {
+    padding: 6px 12px;
+    border-radius: 16px;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.clear-filters {
+    padding: 6px 12px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 16px;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;
+}
+
+.clear-filters:hover {
+    background-color: #f5f5f5;
+}

@@ -29,11 +29,51 @@
 
     <!-- 検索バー -->
     <div class="search-bar">
-        <div class="search-container">
-            <span class="search-icon">🔍</span>
-            <input type="text" class="search-input" placeholder="キーワードで検索（タイトル・材料・タグ）">
-            <span class="filter-icon">⚙</span>
-        </div>
+        <form action="{{ route('recipes.index') }}" method="GET" id="searchForm">
+            <div class="search-container">
+                <span class="search-icon">🔍</span>
+                <input type="text" name="keyword" class="search-input" placeholder="キーワードで検索（タイトル・材料・タグ）" value="{{ request('keyword') }}">
+                <button type="button" class="filter-icon" onclick="toggleFilterModal()">⚙</button>
+            </div>
+
+            <!-- 選択中のタグ表示 -->
+            @if(request('tags'))
+            <div class="selected-filters">
+                @foreach($allTags->whereIn('id', request('tags')) as $tag)
+                <span class="filter-badge" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">
+                    {{ $tag->name }}
+                </span>
+                @endforeach
+                <button type="button" class="clear-filters" onclick="clearFilters()">クリア</button>
+            </div>
+            @endif
+
+            <!-- タグフィルターモーダル -->
+            <div id="filterModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>タグでフィルター</h3>
+                        <button type="button" class="modal-close" onclick="closeFilterModal()">×</button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="tag-list">
+                            @foreach($allTags as $tag)
+                            <label class="tag-checkbox">
+                                <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ in_array($tag->id, request('tags', [])) ? 'checked' : '' }}>
+                                <span class="tag-label" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">{{ $tag->name }}</span>
+                            </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="clear-btn" onclick="clearTagFilters()">クリア</button>
+                        <button type="submit" class="apply-btn">適用</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 
     <!-- レシピ一覧 または 空の状態 -->
