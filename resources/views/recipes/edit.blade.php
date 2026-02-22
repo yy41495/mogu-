@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ | レシピ編集</title>
     @vite(['resources/css/common.css', 'resources/css/recipes.css', 'resources/css/form.css'])
@@ -17,7 +18,9 @@
     </div>
 
     <!-- フォーム -->
-    <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data" class="recipe-form" onsubmit="return validateForm(event)">
+    <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data" class="recipe-form" onsubmit="return validateForm(event)"
+        data-ingredient-count="{{ $recipe->recipeIngredients->count() > 0 ? $recipe->recipeIngredients->count() : 1 }}"
+        data-step-count="{{ $recipe->steps->count() > 0 ? $recipe->steps->count() : 1 }}">
         @csrf
         @method('PUT')
 
@@ -182,20 +185,5 @@
 
     @vite(['resources/js/recipe-form.js'])
 
-    <script>
-        // 編集ページ用：材料と手順のカウントを初期化
-        let ingredientCount = {
-            {
-                $recipe - > recipeIngredients - > count() > 0 ? $recipe - > recipeIngredients - > count() : 1
-            }
-        };
-        let stepCount = {
-            {
-                $recipe - > steps - > count() > 0 ? $recipe - > steps - > count() : 1
-            }
-        };
-    </script>
-
 </body>
-
 </html>

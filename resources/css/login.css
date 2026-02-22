@@ -51,3 +51,19 @@ body {
     height: 20px;
     margin-right: 10px;
 }
+/* ロゴ画像（ログインページ） */
+.logo-img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 8px;
+}
+
+.login-container .logo-text-img {
+    height: 36px;
+    object-fit: contain;
+    margin-bottom: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}

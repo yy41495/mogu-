@@ -454,32 +454,37 @@ textarea {
     color: #666;
 }
 
-/* タグリスト */
+/* タグリスト - バッジタップ形式 */
 .tag-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: 8px;
 }
 
 .tag-checkbox {
-    display: flex;
-    align-items: center;
-    gap: 8px;
     cursor: pointer;
 }
 
 .tag-checkbox input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
+    display: none; /* チェックボックス自体は隠す */
 }
 
 .tag-label {
     padding: 8px 16px;
-    background-color: #e0e0e0;
-    border-radius: 16px;
+    border-radius: 20px;
     font-size: 14px;
-    flex: 1;
+    display: inline-block;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* 選択されたタグのスタイル */
+.tag-checkbox input[type="checkbox"]:checked + .tag-label {
+    border-color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 0 1px #000;
 }
 
 /* モーダルフッターボタン */
@@ -509,3 +514,32 @@ textarea {
 .apply-btn:hover {
     background-color: #333;
 }
+/* ========================================
+   ユーティリティ
+======================================== */
+
+.hidden {
+    display: none !important;
+}
+
+/* ファイル選択inputを確実に隠す */
+input[type="file"] {
+    display: none !important;
+}
+
+/* 画像プレビュー */
+.preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+/* カラーボタン（色はCSSで定義） */
+.color-btn--pink   { background-color: #ffcdd2; }
+.color-btn--yellow { background-color: #fff9c4; }
+.color-btn--green  { background-color: #c8e6c9; }
+.color-btn--blue   { background-color: #bbdefb; }
+.color-btn--purple { background-color: #e1bee7; }
+.color-btn--brown  { background-color: #d7ccc8; }
+.color-btn--gray   { background-color: #e0e0e0; }

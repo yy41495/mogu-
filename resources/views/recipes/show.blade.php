@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $recipe->title }} | mogu+</title>
     @vite(['resources/css/common.css', 'resources/css/recipes.css', 'resources/css/recipe-detail.css'])
@@ -12,7 +13,7 @@
     <!-- ヘッダー -->
     <div class="header">
         <a href="{{ route('recipes.index') }}" class="back-link">← 一覧に戻る</a>
-        <div class="logo-text">mogu+</div>
+        <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
         <div></div>
     </div>
 
@@ -97,17 +98,46 @@
             <a href="{{ route('recipes.edit', $recipe->id) }}" class="edit-btn">
                 ✏️ 編集
             </a>
-            <form action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" onsubmit="return confirm('本当に削除しますか？');" style="display: inline;">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="delete-btn">
-                    🗑 削除
-                </button>
-            </form>
+            <button type="button" class="delete-btn" onclick="openDeleteModal()">
+                🗑 削除
+            </button>
         </div>
     </div>
 
     @vite(['resources/js/sleep.js'])
+
+    <!-- 削除確認モーダル -->
+    <div id="deleteModal" class="delete-modal" style="display: none;">
+        <div class="delete-modal-content">
+            <p class="delete-modal-title">本当に削除しますか？</p>
+            <p class="delete-modal-desc">この操作は取り消せません</p>
+            <div class="delete-modal-actions">
+                <button type="button" class="delete-modal-cancel" onclick="closeDeleteModal()">キャンセル</button>
+                <button type="button" class="delete-modal-confirm" onclick="submitDelete()">削除</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 削除フォーム（非表示） -->
+    <form id="deleteForm" action="{{ route('recipes.destroy', $recipe->id) }}" method="POST" style="display: none;">
+        @csrf
+        @method('DELETE')
+    </form>
+
+    <script>
+        function openDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'flex';
+        }
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').style.display = 'none';
+        }
+        function submitDelete() {
+            document.getElementById('deleteForm').submit();
+        }
+        document.getElementById('deleteModal').addEventListener('click', function(e) {
+            if (e.target === this) closeDeleteModal();
+        });
+    </script>
 </body>
 
 </html>

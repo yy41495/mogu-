@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ | レシピ一覧</title>
     @vite(['resources/css/common.css', 'resources/css/recipes.css'])
@@ -12,8 +13,8 @@
     <!-- ヘッダー -->
     <div class="header">
         <div class="header-left">
-            <div class="logo-icon">ロゴ</div>
-            <div class="logo-text">mogu+</div>
+            <img src="/images/logo-icon.png" alt="mogu+" class="logo-icon">
+            <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
         </div>
         <div class="user-icon" style="cursor: pointer;">👤</div>
 
@@ -57,11 +58,11 @@
                     </div>
 
                     <div class="modal-body">
-                        <div class="tag-list">
+                        <div class="filter-tag-list">
                             @foreach($allTags as $tag)
-                            <label class="tag-checkbox">
+                            <label class="filter-tag-checkbox">
                                 <input type="checkbox" name="tags[]" value="{{ $tag->id }}" {{ in_array($tag->id, request('tags', [])) ? 'checked' : '' }}>
-                                <span class="tag-label" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">{{ $tag->name }}</span>
+                                <span class="filter-tag-label" style="background-color: {{ $tag->color ?? '#e0e0e0' }};">{{ $tag->name }}</span>
                             </label>
                             @endforeach
                         </div>

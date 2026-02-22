@@ -2,14 +2,15 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mogu+ - ログイン</title>
     @vite(['resources/css/common.css', 'resources/css/login.css'])
 </head>
 <body>
     <div class="login-container">
-        <div class="logo">🍳</div>
-        <h1>mogu+</h1>
+        <img src="/images/logo-icon.png" alt="mogu+" class="logo-img">
+        <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
         <p>レシピを管理しよう</p>
 
         <a href="/auth/google" class="google-btn">

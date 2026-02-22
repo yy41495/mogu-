@@ -81,3 +81,14 @@ body {
 .add-button:hover {
     background-color: #333;
 }
+/* ロゴ画像 */
+.logo-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.logo-text-img {
+    height: 28px;
+    object-fit: contain;
+}

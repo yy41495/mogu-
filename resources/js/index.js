@@ -1,44 +1,39 @@
-// DOMが読み込まれてから実行
 document.addEventListener('DOMContentLoaded', function() {
-    const userIcon = document.querySelector('.user-icon');
+    const userIcon = document.getElementById('userIconBtn');
     const userMenu = document.getElementById('userMenu');
 
     // ユーザーアイコンをクリック
     userIcon.addEventListener('click', function(e) {
-        e.stopPropagation(); // イベントの伝播を止める
-        const menu = document.getElementById('userMenu');
-        menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        e.stopPropagation();
+        userMenu.classList.toggle('hidden');
     });
 
     // メニューの外をクリックしたら閉じる
     document.addEventListener('click', function(e) {
         if (!userIcon.contains(e.target) && !userMenu.contains(e.target)) {
-            userMenu.style.display = 'none';
+            userMenu.classList.add('hidden');
         }
     });
 });
 
-// フィルターモーダルの開閉
+// フィルターモーダルの開閉（hiddenクラスだけで制御）
 function toggleFilterModal() {
-    const modal = document.getElementById('filterModal');
-    modal.style.display = modal.style.display === 'none' ? 'flex' : 'none';
+    document.getElementById('filterModal').classList.toggle('hidden');
 }
 
 function closeFilterModal() {
-    document.getElementById('filterModal').style.display = 'none';
+    document.getElementById('filterModal').classList.add('hidden');
 }
 
 // フィルタークリア
 function clearFilters() {
     const form = document.getElementById('searchForm');
-    const checkboxes = form.querySelectorAll('input[name="tags[]"]');
-    checkboxes.forEach(cb => cb.checked = false);
+    form.querySelectorAll('input[name="tags[]"]').forEach(cb => cb.checked = false);
     form.submit();
 }
 
 function clearTagFilters() {
-    const checkboxes = document.querySelectorAll('input[name="tags[]"]');
-    checkboxes.forEach(cb => cb.checked = false);
+    document.querySelectorAll('input[name="tags[]"]').forEach(cb => cb.checked = false);
 }
 
 // グローバルに公開
