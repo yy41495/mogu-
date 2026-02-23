@@ -102,9 +102,8 @@
         </div>
         @else
         <div class="empty-state">
-            <div class="empty-state-icon">📝</div>
             <div class="empty-state-text">レシピがありません</div>
-            <div class="empty-state-subtext">右下の「+」ボタンから追加しましょう</div>
+            <div class="empty-state-subtext">下の「+」ボタンから追加しましょう</div>
         </div>
         @endif
 

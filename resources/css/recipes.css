@@ -6,10 +6,17 @@ body {
     padding-bottom: 80px;
 }
 
-/* 検索バー */
+/* ========================================
+   検索バー
+======================================== */
+
 .search-bar {
     padding: 16px 20px;
     background-color: #fff;
+}
+
+.search-bar form {
+    width: 100%;
 }
 
 .search-container {
@@ -22,7 +29,6 @@ body {
 }
 
 .search-icon {
-    font-size: 20px;
     color: #666;
 }
 
@@ -34,132 +40,20 @@ body {
     outline: none;
 }
 
-.filter-icon {
-    font-size: 20px;
+.filter-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
     color: #666;
-    cursor: pointer;
-}
-
-/* レシピグリッド */
-.recipe-grid {
-    padding: 16px;
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-}
-
-.recipe-card {
-    aspect-ratio: 1;
-    background-color: #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    cursor: pointer;
-    position: relative;
-}
-
-.recipe-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.no-image {
-    width: 100%;
-    height: 100%;
+    padding: 4px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #fff1e3;
-    color: #ff962d;
-    font-size: 14px;
 }
 
-/* 空の状態 */
-.empty-state {
-    text-align: center;
-    padding: 60px 20px;
-    color: #999;
-}
+/* ========================================
+   選択中のフィルター表示
+======================================== */
 
-.empty-state-icon {
-    font-size: 48px;
-    margin-bottom: 16px;
-}
-
-.empty-state-text {
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.empty-state-subtext {
-    font-size: 14px;
-}
-
-/* レシピカードをリンクにする */
-.recipe-card {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
-.recipe-card:hover {
-    opacity: 0.9;
-    transform: scale(1.02);
-    transition: all 0.2s;
-}
-
-/* ユーザーメニュー */
-.user-menu-wrapper {
-    position: relative;
-}
-
-
-.user-menu {
-    position: absolute;  /* fixed → absolute */
-    top: calc(100% + 8px);  /* ボタンのすぐ下 */
-    right: 0;            /* 右端に揃える */
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 12px;
-    min-width: 180px;
-    z-index: 200;
-}
-
-.user-name {
-    padding: 8px 12px;
-    border-bottom: 1px solid #e0e0e0;
-    margin-bottom: 8px;
-    font-weight: 500;
-    color: #333;
-}
-
-.logout-btn {
-    width: 100%;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    color: #333;
-    transition: background-color 0.2s;
-}
-
-.logout-btn:hover {
-    background-color: #e0e0e0;
-}
-
-/* 検索フォーム */
-.search-bar form {
-    width: 100%;
-}
-
-.search-input {
-    width: 100%;
-}
-
-/* 選択中のフィルター */
 .selected-filters {
     display: flex;
     flex-wrap: wrap;
@@ -189,64 +83,119 @@ body {
     background-color: #f5f5f5;
 }
 
-/* フィルターモーダルのタグリスト - バッジタップ形式 */
-.filter-tag-list {
-    display: flex;
-    flex-wrap: wrap;
+/* ========================================
+   レシピグリッド
+======================================== */
+
+.recipe-grid {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
 }
 
-.filter-tag-checkbox {
+.recipe-card {
+    aspect-ratio: 1;
+    background-color: #ddd;
+    border-radius: 8px;
+    overflow: hidden;
     cursor: pointer;
+    position: relative;
+    text-decoration: none;
+    color: inherit;
+    display: block;
 }
 
-.filter-tag-checkbox input[type="checkbox"] {
-    display: none;
+.recipe-card:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+    transition: all 0.2s;
 }
 
-.filter-tag-label {
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    display: inline-block;
-    border: 2px solid transparent;
-    transition: all 0.15s;
-    cursor: pointer;
-    user-select: none;
+.recipe-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.filter-tag-checkbox input[type="checkbox"]:checked+.filter-tag-label {
-    border-color: #000;
-    font-weight: 600;
-    box-shadow: 0 0 0 1px #000;
-}
-
-/* フィルターモーダルのボタン */
-.filter-icon {
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: #666;
-    cursor: pointer;
-    padding: 4px;
-}
-
-/* フィルターボタン（Lucideアイコン用） */
-.filter-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #666;
-    padding: 4px;
+.no-image {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+    background-color: #fff1e3;
+    color: #ff962d;
+    font-size: 14px;
+}
+
+/* ========================================
+   空の状態
+======================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.empty-state-text {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.empty-state-subtext {
+    font-size: 14px;
+}
+
+/* ========================================
+   ユーザーメニュー
+======================================== */
+
+.user-menu-wrapper {
+    position: relative;
+}
+
+.user-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    min-width: 180px;
+    z-index: 200;
+}
+
+.user-name {
+    padding: 8px 12px;
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: background-color 0.2s;
+}
+
+.logout-btn:hover {
+    background-color: #e0e0e0;
 }
 
 /* ========================================
    フィルターモーダル（ボトムシート）
 ======================================== */
 
-/* 暗い背景の幕 */
 .modal {
     position: fixed;
     top: 0;
@@ -259,7 +208,6 @@ body {
     align-items: flex-end;
 }
 
-/* モーダルの本体（白い部分） */
 .modal-content {
     width: 80%;
     background-color: #fff;
@@ -270,14 +218,13 @@ body {
     margin: 0 auto;
 }
 
-/* ヘッダー部分（タイトルと×ボタン） */
 .modal-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 20px 20px 16px;
     border-bottom: 1px solid #e0e0e0;
-    flex-shrink: 0; /* 縮まないようにする */
+    flex-shrink: 0;
 }
 
 .modal-header h3 {
@@ -295,22 +242,49 @@ body {
     align-items: center;
 }
 
-/* タグ一覧（スクロールできる部分） */
 .modal-body {
     padding: 16px 20px;
-    overflow-y: auto; /* タグが多いときスクロールできる */
+    overflow-y: auto;
     flex: 1;
 }
 
-/* フッター（クリア・適用ボタン） */
 .modal-footer {
     display: flex;
     gap: 12px;
     padding: 16px 20px;
     border-top: 1px solid #e0e0e0;
-    flex-shrink: 0; /* 縮まないようにする */
+    flex-shrink: 0;
 }
 
+/* タグリスト */
+.filter-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.filter-tag-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.filter-tag-label {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    display: inline-block;
+    border: 2px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+    user-select: none;
+}
+
+.filter-tag-checkbox input[type="checkbox"]:checked + .filter-tag-label {
+    border-color: #000;
+    font-weight: 600;
+    box-shadow: 0 0 0 1px #000;
+}
+
+/* クリア・適用ボタン */
 .clear-btn {
     flex: 1;
     padding: 14px;
