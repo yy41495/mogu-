@@ -15,13 +15,12 @@
     <div class="header">
         <div class="header-inner">
             <div class="header-left">
-                <a href="{{ route('recipes.show', $recipe->id) }}" class="back-link">
-                    <i data-lucide="arrow-left"></i> 詳細に戻る
+                <a href="{{ route('recipes.index') }}" class="back-link">
+                    <i data-lucide="arrow-left"></i> 一覧に戻る
                 </a>
             </div>
-            <div class="logo-text">レシピ編集</div>
-            <div></div>
         </div>
+        <div class="logo-text">レシピ編集</div>
     </div>
 
     <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data"
@@ -107,7 +106,7 @@
                 @foreach($recipe->steps as $index => $step)
                 <div class="step-item">
                     <span class="step-number">{{ $step->step_number }}</span>
-                    <input type="text" name="steps[{{ $index }}][description]" placeholder="手順を入力" class="step-input" value="{{ $step->description }}">
+                    <textarea name="steps[{{ $index }}][description]" placeholder="手順を入力" class="step-input" rows="1">{{ $step->description }}</textarea>
                     <button type="button" class="delete-btn" onclick="removeItem(this)">
                         <i data-lucide="trash-2"></i>
                     </button>
@@ -116,7 +115,7 @@
                 @else
                 <div class="step-item">
                     <span class="step-number">1</span>
-                    <input type="text" name="steps[0][description]" placeholder="手順を入力" class="step-input">
+                    <textarea name="steps[0][description]" placeholder="手順を入力" class="step-input" rows="1"></textarea>
                     <button type="button" class="delete-btn" onclick="removeItem(this)">
                         <i data-lucide="trash-2"></i>
                     </button>
