@@ -13,11 +13,14 @@
 <body>
     <!-- ヘッダー -->
     <div class="header">
-        <a href="{{ route('recipes.index') }}" class="back-link">
-            <i data-lucide="arrow-left"></i> 一覧に戻る
-        </a>
+        <div class="header-inner">
+            <div class="header-left">
+                <a href="{{ route('recipes.index') }}" class="back-link">
+                    <i data-lucide="arrow-left"></i> 一覧に戻る
+                </a>
+            </div>
+        </div>
         <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
-        <div></div>
     </div>
 
     <!-- 画面スリープ防止ボタン -->
@@ -101,8 +104,6 @@
         </div>
     </div>
 
-    @vite(['resources/js/sleep.js'])
-
     <!-- 削除確認モーダル -->
     <div id="deleteModal" class="delete-modal hidden">
         <div class="delete-modal-content">
@@ -119,23 +120,9 @@
         @csrf
         @method('DELETE')
     </form>
-
+    @vite(['resources/js/sleep.js', 'resources/js/delete.js'])
     <script>
         lucide.createIcons();
-        function openDeleteModal() {
-            document.getElementById('deleteModal').classList.remove('hidden');
-            document.getElementById('deleteModal').style.display = 'flex';
-        }
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
-            document.getElementById('deleteModal').style.display = '';
-        }
-        function submitDelete() {
-            document.getElementById('deleteForm').submit();
-        }
-        document.getElementById('deleteModal').addEventListener('click', function(e) {
-            if (e.target === this) closeDeleteModal();
-        });
     </script>
 </body>
 

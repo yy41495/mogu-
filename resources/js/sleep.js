@@ -16,13 +16,13 @@ async function toggleWakeLock() {
             wakeLock = null;
             isActive = false;
             sleepPreventBtn.style.backgroundColor = "#f5f5f5";
-            sleepPreventBtn.style.color = "#333";
+            sleepPreventBtn.style.color = "#ee7800";
         } else {
             // 有効化
             wakeLock = await navigator.wakeLock.request("screen");
             isActive = true;
             sleepPreventBtn.style.backgroundColor = "#fff9c4";
-            sleepPreventBtn.style.color = "#000";
+            sleepPreventBtn.style.color = "#ee7800";
 
             wakeLock.addEventListener("release", () => {
                 console.log("Wake Lock was released");

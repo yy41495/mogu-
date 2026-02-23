@@ -15,6 +15,7 @@ export default defineConfig({
                 'resources/js/index.js',
                 'resources/js/recipe-form.js',
                 'resources/js/sleep.js',
+                'resources/js/delete.js',
             ],
             refresh: true,
         }),
