@@ -9,9 +9,8 @@
 </head>
 <body>
     <div class="login-container">
-        <img src="/images/logo-icon.png" alt="mogu+" class="logo-img">
-        <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
-        <p>レシピを管理しよう</p>
+        <img src="/images/logo-icon_login.png" alt="mogu+" class="logo-img">
+        <img src="/images/logo-text_login.png" alt="mogu+" class="logo-text-img">
 
         <a href="/auth/google" class="google-btn">
             <svg class="google-icon" viewBox="0 0 24 24">

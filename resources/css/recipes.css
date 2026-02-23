@@ -44,7 +44,7 @@ body {
 .recipe-grid {
     padding: 16px;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
 }
 
@@ -69,8 +69,8 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #e0e0e0;
-    color: #999;
+    background-color: #fff1e3;
+    color: #ff962d;
     font-size: 14px;
 }
 
@@ -109,10 +109,15 @@ body {
 }
 
 /* ユーザーメニュー */
+.user-menu-wrapper {
+    position: relative;
+}
+
+
 .user-menu {
-    position: fixed;
-    top: 68px;
-    right: 20px;
+    position: absolute;  /* fixed → absolute */
+    top: calc(100% + 8px);  /* ボタンのすぐ下 */
+    right: 0;            /* 右端に揃える */
     background-color: white;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -183,6 +188,7 @@ body {
 .clear-filters:hover {
     background-color: #f5f5f5;
 }
+
 /* フィルターモーダルのタグリスト - バッジタップ形式 */
 .filter-tag-list {
     display: flex;
@@ -209,7 +215,7 @@ body {
     user-select: none;
 }
 
-.filter-tag-checkbox input[type="checkbox"]:checked + .filter-tag-label {
+.filter-tag-checkbox input[type="checkbox"]:checked+.filter-tag-label {
     border-color: #000;
     font-weight: 600;
     box-shadow: 0 0 0 1px #000;
@@ -236,9 +242,102 @@ body {
     align-items: center;
 }
 
-/* 追加ボタンのアイコン */
-.add-button i[data-lucide] {
-    width: 32px;
-    height: 32px;
-    color: white;
+/* ========================================
+   フィルターモーダル（ボトムシート）
+======================================== */
+
+/* 暗い背景の幕 */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 300;
+    display: flex;
+    align-items: flex-end;
+}
+
+/* モーダルの本体（白い部分） */
+.modal-content {
+    width: 80%;
+    background-color: #fff;
+    border-radius: 16px 16px 0 0;
+    max-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+/* ヘッダー部分（タイトルと×ボタン） */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid #e0e0e0;
+    flex-shrink: 0; /* 縮まないようにする */
+}
+
+.modal-header h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.modal-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #666;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+}
+
+/* タグ一覧（スクロールできる部分） */
+.modal-body {
+    padding: 16px 20px;
+    overflow-y: auto; /* タグが多いときスクロールできる */
+    flex: 1;
+}
+
+/* フッター（クリア・適用ボタン） */
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px;
+    border-top: 1px solid #e0e0e0;
+    flex-shrink: 0; /* 縮まないようにする */
+}
+
+.clear-btn {
+    flex: 1;
+    padding: 14px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    color: #333;
+}
+
+.clear-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.apply-btn {
+    flex: 1;
+    padding: 14px;
+    background-color: #ee7800;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+}
+
+.apply-btn:hover {
+    background-color: #ff962d;
 }
