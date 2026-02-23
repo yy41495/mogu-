@@ -6,21 +6,29 @@ body {
     padding-bottom: 100px;
 }
 
+.logo-text {
+    color: white;
+    font-weight: bold;
+}
+
 /* 戻るリンク */
 .back-link {
-    color: #333;
+    color: white;
     text-decoration: none;
     font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .back-link:hover {
-    color: #666;
+    color: #ebebeb;
 }
 
 /* フォーム全体 */
 .recipe-form {
     padding: 20px;
-    max-width: 600px;
+    max-width: 850px;
     margin: 0 auto;
 }
 
@@ -37,7 +45,7 @@ body {
 }
 
 .required {
-    color: #ff4444;
+    color: #e60000;
     font-size: 12px;
     font-weight: normal;
 }
@@ -96,13 +104,14 @@ textarea:focus {
 }
 
 textarea {
-    resize: vertical;
-    min-height: 100px;
+    resize: none;
+    min-height: 42px;
+    overflow: hidden;
 }
 
 /* エラーメッセージ */
 .error-message {
-    color: #ff4444;
+    color: #e60000;
     font-size: 14px;
     margin-top: 4px;
     display: block;
@@ -116,8 +125,8 @@ textarea {
 }
 
 .tag-select-btn {
-    padding: 12px 20px;
-    background-color: #666;
+    padding: 12px 40px;
+    background-color: #ee7800;
     color: white;
     border: none;
     border-radius: 8px;
@@ -128,7 +137,7 @@ textarea {
 }
 
 .tag-select-btn:hover {
-    background-color: #555;
+    background-color: #ff962d;
 }
 
 .selected-tags {
@@ -154,14 +163,14 @@ textarea {
 
 /* 追加ボタン */
 .add-item-btn {
-    padding: 10px 16px;
+    padding: 10px 40px;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s;
-    margin-bottom: 12px;
+    margin: 10px 0;
 }
 
 .add-item-btn:hover {
@@ -207,7 +216,7 @@ textarea {
 .step-number {
     width: 30px;
     height: 30px;
-    background-color: #000;
+    background-color: #ee7800;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -228,8 +237,7 @@ textarea {
 .delete-btn {
     width: 40px;
     height: 40px;
-    background-color: #ff4444;
-    color: white;
+    background-color: #e60000;
     border: none;
     border-radius: 8px;
     font-size: 18px;
@@ -240,6 +248,11 @@ textarea {
     justify-content: center;
 }
 
+.delete-btn svg {
+    height: 20px;
+    color: white;
+}
+
 .delete-btn:hover {
     background-color: #cc0000;
 }
@@ -248,7 +261,7 @@ textarea {
 .save-btn {
     width: 100%;
     padding: 16px;
-    background-color: #000;
+    background-color: #ee7800;
     color: white;
     border: none;
     border-radius: 8px;
@@ -260,7 +273,7 @@ textarea {
 }
 
 .save-btn:hover {
-    background-color: #333;
+    background-color: #ff962d;
 }
 
 /* ========================================

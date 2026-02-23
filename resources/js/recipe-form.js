@@ -1,7 +1,7 @@
 // =============================
-// 初期カウント（data属性から受け取る）
+// 初期カウント
 // =============================
-const recipeForm = document.querySelector('.recipe-form');
+const recipeForm = document.querySelector(".recipe-form");
 let ingredientCount = recipeForm ? parseInt(recipeForm.dataset.ingredientCount) || 1 : 1;
 let stepCount = recipeForm ? parseInt(recipeForm.dataset.stepCount) || 1 : 1;
 
@@ -9,7 +9,22 @@ let stepCount = recipeForm ? parseInt(recipeForm.dataset.stepCount) || 1 : 1;
 let selectedTagIds = [];
 let selectedColor = "#e0e0e0"; // デフォルト色
 
+// =============================
+// ゴミ箱アイコンSVG（共通で使いまわす）
+// =============================
+const trashSVG = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+        fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="3 6 5 6 21 6"/>
+        <path d="M19 6l-1 14H6L5 6"/>
+        <path d="M10 11v6"/>
+        <path d="M14 11v6"/>
+        <path d="M9 6V4h6v2"/>
+    </svg>
+`;
+
 document.addEventListener("DOMContentLoaded", function () {
+
     // =============================
     // 画像プレビュー
     // =============================
@@ -23,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
             reader.onload = function (e) {
                 const preview = document.getElementById("image-preview");
                 preview.innerHTML = `<img src="${e.target.result}"
-                        style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
+                    style="width:100%;height:100%;object-fit:cover;border-radius:8px;">`;
             };
             reader.readAsDataURL(file);
         });
@@ -43,9 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const modal = document.getElementById("tagModal");
     if (modal) {
         modal.addEventListener("click", function (e) {
-            if (e.target === this) {
-                closeTagModal();
-            }
+            if (e.target === this) closeTagModal();
         });
     }
 
@@ -54,9 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // =============================
     document.querySelectorAll(".color-btn").forEach((btn) => {
         btn.addEventListener("click", function () {
-            document
-                .querySelectorAll(".color-btn")
-                .forEach((b) => b.classList.remove("selected"));
+            document.querySelectorAll(".color-btn").forEach((b) => b.classList.remove("selected"));
             this.classList.add("selected");
             selectedColor = this.dataset.color;
         });
@@ -70,12 +81,8 @@ document.addEventListener("DOMContentLoaded", function () {
         tagSearch.addEventListener("input", function (e) {
             const searchTerm = e.target.value.toLowerCase();
             document.querySelectorAll(".tag-checkbox").forEach((label) => {
-                const tagName = label
-                    .querySelector("input")
-                    .dataset.name.toLowerCase();
-                label.style.display = tagName.includes(searchTerm)
-                    ? "flex"
-                    : "none";
+                const tagName = label.querySelector("input").dataset.name.toLowerCase();
+                label.style.display = tagName.includes(searchTerm) ? "flex" : "none";
             });
         });
     }
@@ -90,17 +97,9 @@ document.addEventListener("DOMContentLoaded", function () {
             const item = document.createElement("div");
             item.className = "ingredient-item";
             item.innerHTML = `
-                <input type="text"
-                    name="ingredients[${ingredientCount}][name]"
-                    placeholder="材料名"
-                    class="ingredient-input">
-                <input type="text"
-                    name="ingredients[${ingredientCount}][quantity]"
-                    placeholder="分量"
-                    class="quantity-input">
-                <button type="button"
-                    class="delete-btn"
-                    onclick="removeItem(this)">🗑</button>
+                <input type="text" name="ingredients[${ingredientCount}][name]" placeholder="材料名" class="ingredient-input">
+                <input type="text" name="ingredients[${ingredientCount}][quantity]" placeholder="分量" class="quantity-input">
+                <button type="button" class="delete-btn" onclick="removeItem(this)">${trashSVG}</button>
             `;
             list.appendChild(item);
             ingredientCount++;
@@ -118,19 +117,21 @@ document.addEventListener("DOMContentLoaded", function () {
             item.className = "step-item";
             item.innerHTML = `
                 <span class="step-number">${stepCount + 1}</span>
-                <input type="text"
-                    name="steps[${stepCount}][description]"
-                    placeholder="手順を入力"
-                    class="step-input">
-                <button type="button"
-                    class="delete-btn"
-                    onclick="removeItem(this)">🗑</button>
+                <textarea name="steps[${stepCount}][description]" placeholder="手順を入力" class="step-input" rows="1"></textarea>
+                <button type="button" class="delete-btn" onclick="removeItem(this)">${trashSVG}</button>
             `;
+            // 追加したtextareaに自動リサイズを設定
+            item.querySelector("textarea").addEventListener("input", autoResize);
             list.appendChild(item);
             stepCount++;
             updateStepNumbers();
         });
     }
+
+    // 最初からあるtextareaにも自動リサイズを設定
+    document.querySelectorAll("textarea").forEach((el) => {
+        el.addEventListener("input", autoResize);
+    });
 
     // =============================
     // Enterキー送信防止
@@ -138,12 +139,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const form = document.querySelector(".recipe-form");
     if (form) {
         form.addEventListener("keydown", function (e) {
-            if (e.key === "Enter" && e.target.type !== "submit") {
+            if (e.key === "Enter" && e.target.tagName !== "TEXTAREA" && e.target.type !== "submit") {
                 e.preventDefault();
             }
         });
     }
 });
+
+// =============================
+// テキストエリア自動リサイズ
+// =============================
+function autoResize() {
+    this.style.height = "auto";
+    this.style.height = this.scrollHeight + "px";
+}
 
 // =============================
 // モーダル制御
@@ -153,11 +162,11 @@ function closeTagModal() {
 }
 
 function showNewTagForm() {
-    document.getElementById("newTagForm").style.display = "block";
+    document.getElementById("newTagForm").classList.remove("hidden");
 }
 
 function hideNewTagForm() {
-    document.getElementById("newTagForm").style.display = "none";
+    document.getElementById("newTagForm").classList.add("hidden");
     document.getElementById("newTagName").value = "";
 }
 
@@ -177,33 +186,17 @@ function addNewTag() {
     const label = document.createElement("label");
     label.className = "tag-checkbox";
     label.innerHTML = `
-        <input type="checkbox"
-            value="${newId}"
-            data-name="${tagName}"
-            data-color="${selectedColor}"
-            data-new="true" checked>
-        <span class="tag-label"
-            style="background-color:${selectedColor};">
-            ${tagName}
-        </span>
+        <input type="checkbox" value="${newId}" data-name="${tagName}" data-color="${selectedColor}" data-new="true" checked>
+        <span class="tag-label" style="background-color:${selectedColor};">${tagName}</span>
     `;
-
     allTags.insertBefore(label, allTags.firstChild);
 
-    selectedTagIds.push({
-        id: newId,
-        name: tagName,
-        color: selectedColor,
-        isNew: true,
-    });
-
+    selectedTagIds.push({ id: newId, name: tagName, color: selectedColor, isNew: true });
     hideNewTagForm();
 }
 
 function clearSelectedTags() {
-    document
-        .querySelectorAll('#allTags input[type="checkbox"]')
-        .forEach((cb) => (cb.checked = false));
+    document.querySelectorAll('#allTags input[type="checkbox"]').forEach((cb) => (cb.checked = false));
     selectedTagIds = [];
 }
 
@@ -211,55 +204,45 @@ function applyTags() {
     selectedTagIds = [];
     const selectedTagsDiv = document.getElementById("selectedTags");
     selectedTagsDiv.innerHTML = "";
-
     let newTagIndex = 0;
 
-    document
-        .querySelectorAll('#allTags input[type="checkbox"]:checked')
-        .forEach((cb) => {
-            const tagData = {
-                id: cb.value,
-                name: cb.dataset.name,
-                color: cb.dataset.color || "#e0e0e0",
-                isNew: cb.dataset.new === "true",
-            };
+    document.querySelectorAll('#allTags input[type="checkbox"]:checked').forEach((cb) => {
+        const tagData = {
+            id: cb.value,
+            name: cb.dataset.name,
+            color: cb.dataset.color || "#e0e0e0",
+            isNew: cb.dataset.new === "true",
+        };
+        selectedTagIds.push(tagData);
 
-            selectedTagIds.push(tagData);
+        const badge = document.createElement("span");
+        badge.className = "tag-badge";
+        badge.id = "tag_badge_" + tagData.id;
+        badge.style.backgroundColor = tagData.color;
+        badge.innerHTML = `${tagData.name}<span class="tag-remove" onclick="removeTag('${tagData.id}')">×</span>`;
+        selectedTagsDiv.appendChild(badge);
 
-            const badge = document.createElement("span");
-            badge.className = "tag-badge";
-            badge.id = "tag_badge_" + tagData.id;
-            badge.style.backgroundColor = tagData.color;
-            badge.innerHTML = `
-                ${tagData.name}
-                <span class="tag-remove"
-                    onclick="removeTag('${tagData.id}')">×</span>
-            `;
+        if (tagData.isNew) {
+            const nameInput = document.createElement("input");
+            nameInput.type = "hidden";
+            nameInput.name = "new_tags[]";
+            nameInput.value = tagData.name;
+            selectedTagsDiv.appendChild(nameInput);
 
-            selectedTagsDiv.appendChild(badge);
-
-            if (tagData.isNew) {
-                const nameInput = document.createElement("input");
-                nameInput.type = "hidden";
-                nameInput.name = "new_tags[]";
-                nameInput.value = tagData.name;
-                selectedTagsDiv.appendChild(nameInput);
-
-                const colorInput = document.createElement("input");
-                colorInput.type = "hidden";
-                colorInput.name = `new_tag_colors[${newTagIndex}]`;
-                colorInput.value = tagData.color;
-                selectedTagsDiv.appendChild(colorInput);
-
-                newTagIndex++;
-            } else {
-                const input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "tags[]";
-                input.value = tagData.id;
-                selectedTagsDiv.appendChild(input);
-            }
-        });
+            const colorInput = document.createElement("input");
+            colorInput.type = "hidden";
+            colorInput.name = `new_tag_colors[${newTagIndex}]`;
+            colorInput.value = tagData.color;
+            selectedTagsDiv.appendChild(colorInput);
+            newTagIndex++;
+        } else {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "tags[]";
+            input.value = tagData.id;
+            selectedTagsDiv.appendChild(input);
+        }
+    });
 
     closeTagModal();
 }
@@ -267,11 +250,8 @@ function applyTags() {
 function removeTag(tagId) {
     const checkbox = document.querySelector(`#allTags input[value="${tagId}"]`);
     if (checkbox) checkbox.checked = false;
-
     selectedTagIds = selectedTagIds.filter((tag) => tag.id !== tagId);
-
     const badge = document.getElementById("tag_badge_" + tagId);
-
     if (badge) badge.remove();
 }
 
@@ -293,13 +273,11 @@ function updateStepNumbers() {
 
 function validateForm(event) {
     const title = document.getElementById("title").value.trim();
-
     if (!title) {
         alert("タイトルを入力してください");
         event.preventDefault();
         return false;
     }
-
     return true;
 }
 

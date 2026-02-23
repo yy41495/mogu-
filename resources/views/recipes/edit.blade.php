@@ -13,11 +13,15 @@
 <body>
     <!-- ヘッダー -->
     <div class="header">
-        <a href="{{ route('recipes.show', $recipe->id) }}" class="back-link">
-            <i data-lucide="arrow-left"></i> 詳細に戻る
-        </a>
-        <div class="logo-text">レシピ編集</div>
-        <div></div>
+        <div class="header-inner">
+            <div class="header-left">
+                <a href="{{ route('recipes.show', $recipe->id) }}" class="back-link">
+                    <i data-lucide="arrow-left"></i> 詳細に戻る
+                </a>
+            </div>
+            <div class="logo-text">レシピ編集</div>
+            <div></div>
+        </div>
     </div>
 
     <form action="{{ route('recipes.update', $recipe->id) }}" method="POST" enctype="multipart/form-data"
@@ -71,7 +75,6 @@
         <!-- 材料・分量 -->
         <div class="form-group">
             <label>材料・分量</label>
-            <button type="button" class="add-item-btn" id="addIngredientBtn">+ 材料を追加</button>
             <div id="ingredientList" class="ingredient-list">
                 @if($recipe->recipeIngredients->count() > 0)
                 @foreach($recipe->recipeIngredients as $index => $recipeIngredient)
@@ -93,12 +96,12 @@
                 </div>
                 @endif
             </div>
+            <button type="button" class="add-item-btn" id="addIngredientBtn">+ 材料を追加</button>
         </div>
 
         <!-- 手順 -->
         <div class="form-group">
             <label>手順</label>
-            <button type="button" class="add-item-btn" id="addStepBtn">+ 手順を追加</button>
             <div id="stepList" class="step-list">
                 @if($recipe->steps->count() > 0)
                 @foreach($recipe->steps as $index => $step)
@@ -120,6 +123,7 @@
                 </div>
                 @endif
             </div>
+            <button type="button" class="add-item-btn" id="addStepBtn">+ 手順を追加</button>
         </div>
 
         <!-- 自分用メモ -->
@@ -154,13 +158,13 @@
                 <div id="newTagForm" class="new-tag-form hidden">
                     <input type="text" id="newTagName" placeholder="新規登録タグ名" class="new-tag-input">
                     <div class="color-picker">
-                        <button type="button" class="color-btn color-btn--pink"   data-color="#ffcdd2"></button>
+                        <button type="button" class="color-btn color-btn--pink" data-color="#ffcdd2"></button>
                         <button type="button" class="color-btn color-btn--yellow" data-color="#fff9c4"></button>
-                        <button type="button" class="color-btn color-btn--green"  data-color="#c8e6c9"></button>
-                        <button type="button" class="color-btn color-btn--blue"   data-color="#bbdefb"></button>
+                        <button type="button" class="color-btn color-btn--green" data-color="#c8e6c9"></button>
+                        <button type="button" class="color-btn color-btn--blue" data-color="#bbdefb"></button>
                         <button type="button" class="color-btn color-btn--purple" data-color="#e1bee7"></button>
-                        <button type="button" class="color-btn color-btn--brown"  data-color="#d7ccc8"></button>
-                        <button type="button" class="color-btn color-btn--gray"   data-color="#e0e0e0"></button>
+                        <button type="button" class="color-btn color-btn--brown" data-color="#d7ccc8"></button>
+                        <button type="button" class="color-btn color-btn--gray" data-color="#e0e0e0"></button>
                     </div>
                     <div class="new-tag-actions">
                         <button type="button" class="cancel-btn" onclick="hideNewTagForm()">キャンセル</button>
@@ -187,6 +191,9 @@
     </div>
 
     @vite(['resources/js/recipe-form.js'])
-    <script>lucide.createIcons();</script>
+    <script>
+        lucide.createIcons();
+    </script>
 </body>
+
 </html>
