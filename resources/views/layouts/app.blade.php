@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('title', 'mogu+')</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    @vite(['resources/css/base.css'])
+    @yield('css')
+</head>
+<body>
+    <!-- ヘッダー -->
+    <div class="header">
+        <div class="header-inner">
+            <!-- 左側：各ページが埋める（ロゴ or 戻るリンク） -->
+            <div class="header-left">
+                @yield('header-left')
+            </div>
+            <!-- 右側：各ページが埋める（ユーザーアイコン or ページタイトル） -->
+            @yield('header-right')
+        </div>
+    </div>
+
+    <!-- ページ本文 -->
+    @yield('content')
+
+    @yield('scripts')
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

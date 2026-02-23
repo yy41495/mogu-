@@ -1,28 +1,24 @@
-<!DOCTYPE html>
-<html lang="ja">
+@extends('layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $recipe->title }} | mogu+</title>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    @vite(['resources/css/common.css', 'resources/css/recipes.css', 'resources/css/recipe-detail.css'])
-</head>
+@section('title', $recipe->title . ' | mogu+')
 
-<body>
-    <!-- ヘッダー -->
-    <div class="header">
-        <div class="header-inner">
-            <div class="header-left">
-                <a href="{{ route('recipes.index') }}" class="back-link">
-                    <i data-lucide="arrow-left"></i> 一覧に戻る
-                </a>
-            </div>
-        </div>
-        <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
-    </div>
+@section('css')
+    @vite(['resources/css/recipe-detail.css'])
+@endsection
 
+{{-- ヘッダー左：戻るリンク --}}
+@section('header-left')
+    <a href="{{ route('recipes.index') }}" class="back-link">
+        <i data-lucide="arrow-left"></i> 一覧に戻る
+    </a>
+@endsection
+
+{{-- ヘッダー右：ロゴテキスト --}}
+@section('header-right')
+    <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
+@endsection
+
+@section('content')
     <!-- 画面スリープ防止ボタン -->
     <button type="button" class="sleep-prevent-btn" id="sleepPreventBtn" title="画面スリープ防止">
         <i data-lucide="sun"></i>
@@ -120,10 +116,8 @@
         @csrf
         @method('DELETE')
     </form>
-    @vite(['resources/js/sleep.js', 'resources/js/delete.js'])
-    <script>
-        lucide.createIcons();
-    </script>
-</body>
+@endsection
 
-</html>
+@section('scripts')
+    @vite(['resources/js/sleep.js', 'resources/js/delete.js'])
+@endsection
