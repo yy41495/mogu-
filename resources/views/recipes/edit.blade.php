@@ -6,14 +6,14 @@
     @vite(['resources/css/recipe-form.css'])
 @endsection
 
-{{-- ヘッダー左：戻るリンク --}}
+<!-- ヘッダー左：戻るリンク -->
 @section('header-left')
     <a href="{{ route('recipes.index') }}" class="back-link">
         <i data-lucide="arrow-left"></i> 一覧に戻る
     </a>
 @endsection
 
-{{-- ヘッダー右：ページタイトル --}}
+<!-- ヘッダー右：ページタイトル -->
 @section('header-right')
     <span class="logo-text">レシピ編集</span>
 @endsection

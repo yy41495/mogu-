@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('recipe_id')->constrained()->onDelete('cascade');
             $table->foreignId('ingredient_id')->constrained()->onDelete('cascade');
-            $table->string('quantity', 100);
+            $table->string('quantity', 100)->nullable();
             $table->timestamp('created_at')->useCurrent();
 
             // 同じレシピに同じ材料は1つまで

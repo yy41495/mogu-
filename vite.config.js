@@ -7,6 +7,7 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/base.css',
+                'resources/css/responsive.css',
                 'resources/css/login.css',
                 'resources/css/recipes.css',
                 'resources/css/recipe-form.css',

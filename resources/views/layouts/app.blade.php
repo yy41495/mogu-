@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/base.css'])
     @yield('css')
+    @vite(['resources/css/responsive.css'])
 </head>
 <body>
     <!-- ヘッダー -->

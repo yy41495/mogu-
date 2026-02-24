@@ -5,7 +5,7 @@
     <link rel="icon" href="/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'mogu+')</title>
-    @vite(['resources/css/base.css', 'resources/css/login.css'])
+    @vite(['resources/css/base.css', 'resources/css/login.css', 'resources/css/responsive.css'])
 </head>
 <body>
     @yield('content')
