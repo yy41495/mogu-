@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'mogu+')</title>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     @vite(['resources/css/base.css'])
     @yield('css')
     @vite(['resources/css/responsive.css'])

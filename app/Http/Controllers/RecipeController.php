@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Recipe;
 use App\Models\Tag;
-use App\Models\Ingredient;           // ← 追加
-use App\Models\RecipeIngredient;     // ← 追加
-use App\Models\Step;                 // ← 追加
+use App\Models\Ingredient;
+use App\Models\RecipeIngredient;
+use App\Models\Step;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
@@ -74,14 +74,18 @@ class RecipeController extends Controller
     {
         // バリデーション（入力チェック）
         $validated = $request->validate([
-            'title' => 'required|max:255',
-            'memo' => 'nullable',
-            'source_url' => 'nullable|url',
-            'image' => 'nullable|image|max:5120', // 最大5MB
-            'tags' => 'nullable|array',
-            'new_tags' => 'nullable|array',
-            'ingredients' => 'nullable|array',
-            'steps' => 'nullable|array',
+            'title'              => 'required|max:255',
+            'memo'               => 'nullable',
+            'source_url'         => 'nullable|url',
+            'image'              => 'nullable|image|max:5120',
+            'ogp_image_url'      => 'nullable|url',
+            'tags'               => 'nullable|array',
+            'new_tags'           => 'nullable|array',
+            'new_tags.*'         => 'nullable|string|max:50',
+            'new_tag_colors'     => 'nullable|array',
+            'new_tag_colors.*'   => 'nullable|string|max:7', // #ffffff 形式
+            'ingredients'        => 'nullable|array',
+            'steps'              => 'nullable|array',
         ]);
 
         // レシピを作成
@@ -107,6 +111,12 @@ class RecipeController extends Controller
             ]);
 
             $recipe->image_path = $uploadResult->getSecurePath();
+            $recipe->save();
+        }
+
+        // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
+        if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
+            $recipe->image_path = $request->input('ogp_image_url');
             $recipe->save();
         }
 
@@ -166,14 +176,18 @@ class RecipeController extends Controller
 
         // バリデーション
         $validated = $request->validate([
-            'title' => 'required|max:255',
-            'memo' => 'nullable',
-            'source_url' => 'nullable|url',
-            'image' => 'nullable|image|max:5120',
-            'tags' => 'nullable|array',
-            'new_tags' => 'nullable|array',
-            'ingredients' => 'nullable|array',
-            'steps' => 'nullable|array',
+            'title'              => 'required|max:255',
+            'memo'               => 'nullable',
+            'source_url'         => 'nullable|url',
+            'image'              => 'nullable|image|max:5120',
+            'ogp_image_url'      => 'nullable|url',
+            'tags'               => 'nullable|array',
+            'new_tags'           => 'nullable|array',
+            'new_tags.*'         => 'nullable|string|max:50',
+            'new_tag_colors'     => 'nullable|array',
+            'new_tag_colors.*'   => 'nullable|string|max:7',
+            'ingredients'        => 'nullable|array',
+            'steps'              => 'nullable|array',
         ]);
 
         // レシピを更新
@@ -207,6 +221,12 @@ class RecipeController extends Controller
             ]);
 
             $recipe->image_path = $uploadResult->getSecurePath();
+            $recipe->save();
+        }
+
+        // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
+        if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
+            $recipe->image_path = $request->input('ogp_image_url');
             $recipe->save();
         }
 
@@ -270,7 +290,7 @@ class RecipeController extends Controller
                 // 同じ名前のタグがあるか確認
                 $tag = Tag::firstOrCreate(
                     ['name' => $tagName],
-                    ['color' => $color]  // 新規作成時に色も保存
+                    ['color' => $color]
                 );
                 $tagIds[] = $tag->id;
             }
@@ -343,7 +363,7 @@ class RecipeController extends Controller
     private function getPublicIdFromUrl($url)
     {
         // https://res.cloudinary.com/xxx/image/upload/v123456/mogu-plus/recipes/abc123.jpg
-        // → mogu-plus/recipes/abc123
+        // → 例：mogu-plus/recipes/abc123
 
         $pattern = '/\/upload\/(?:v\d+\/)?(.+)\.\w+$/';
         if (preg_match($pattern, $url, $matches)) {

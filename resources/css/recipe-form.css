@@ -259,6 +259,40 @@ textarea {
     font-size: 14px;
 }
 
+/* ========================================
+   参考URL・取得ボタン
+======================================== */
+.form-group p {
+    color: #333;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.url-input-group {
+    display: flex;
+    gap: 8px;
+}
+
+.url-input-group input {
+    flex: 1;
+}
+
+.ogp-fetch-btn {
+    padding: 12px 20px;
+    background-color: #ee7800;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.ogp-fetch-btn:hover {
+    background-color: #ff962d;
+}
+
 /* 保存ボタン */
 .save-btn {
     width: 100%;

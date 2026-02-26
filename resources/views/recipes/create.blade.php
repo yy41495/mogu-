@@ -6,14 +6,14 @@
     @vite(['resources/css/recipe-form.css'])
 @endsection
 
-{{-- ヘッダー左：戻るリンク --}}
+<!-- ヘッダー左：戻るリンク -->
 @section('header-left')
     <a href="{{ route('recipes.index') }}" class="back-link">
         <i data-lucide="arrow-left"></i> 一覧に戻る
     </a>
 @endsection
 
-{{-- ヘッダー右：ページタイトル --}}
+<!-- ヘッダー右：ページタイトル -->
 @section('header-right')
     <span class="logo-text">レシピ追加</span>
 @endsection
@@ -90,7 +90,11 @@
     <!-- 参考URL -->
     <div class="form-group">
         <label for="source_url">参考URL・引用元</label>
-        <input type="url" id="source_url" name="source_url" placeholder="https://..." value="{{ old('source_url') }}">
+        <p>Youtubeの場合、「取得」ボタンからタイトル・サムネイルを自動取得できます</p>
+        <div class="url-input-group">
+            <input type="url" id="source_url" name="source_url" placeholder="https://...">
+            <button type="button" id="ogpFetchBtn" class="ogp-fetch-btn">取得</button>
+        </div>
     </div>
 
     <button type="submit" class="save-btn">保存</button>

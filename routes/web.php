@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\RecipeController;
+use App\Http\Controllers\OgpController;
 
 // 既存のルート
 Route::get('/', function () {
@@ -43,4 +44,7 @@ Route::middleware(['auth'])->group(function () {
 
     // レシピ削除処理
     Route::delete('/recipes/{id}', [RecipeController::class, 'destroy'])->name('recipes.destroy');
+
+    // OGP取得API
+    Route::post('/ogp/fetch', [OgpController::class, 'fetch'])->name('ogp.fetch');
 });

@@ -1,7 +1,4 @@
-{{--
-    タグ選択モーダル
-    create.blade.php と edit.blade.php で @include して使う
---}}
+<!-- タグ選択モーダル　create.blade.php と edit.blade.php で @include して使う -->
 <div id="tagModal" class="modal">
     <div class="modal-content">
         <div class="modal-header">
