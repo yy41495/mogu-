@@ -7,7 +7,7 @@ use App\Http\Controllers\OgpController;
 
 // 既存のルート
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 // Googleログイン
