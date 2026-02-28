@@ -9,7 +9,9 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     zip \
     unzip \
-    nginx
+    nginx \
+    nodejs \
+    npm
 
 RUN docker-php-ext-install pdo pdo_pgsql mbstring exif pcntl bcmath gd
 
@@ -20,6 +22,8 @@ WORKDIR /var/www/html
 COPY . .
 
 RUN composer install --optimize-autoloader --no-dev
+
+RUN npm install && npm run build
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
