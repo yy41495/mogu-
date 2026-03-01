@@ -28,6 +28,8 @@ class GoogleController extends Controller
             $googleUser = Socialite::driver('google')->user();
 
             // データベースでユーザーを探す or 新規作成
+            $isNewUser = !User::where('google_id', $googleUser->getId())->exists();
+
             $user = User::updateOrCreate(
                 ['google_id' => $googleUser->getId()],
                 [
@@ -35,6 +37,11 @@ class GoogleController extends Controller
                     'email' => $googleUser->getEmail(),
                 ]
             );
+
+            // 新規ユーザーならサンプルレシピを作成
+            if ($isNewUser) {
+                $this->createSampleRecipe($user);
+            }
 
             // ログイン
             Auth::login($user);
@@ -58,5 +65,50 @@ class GoogleController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/login')->with('success', 'ログアウトしました');
+    }
+
+    /**
+     * 新規ユーザー用サンプルレシピを作成
+     */
+    private function createSampleRecipe(User $user)
+    {
+        $tag = \App\Models\Tag::firstOrCreate(['name' => 'サンプル']);
+
+        $recipe = \App\Models\Recipe::create([
+            'user_id'    => $user->id,
+            'title'      => 'README（サンプルレシピ）',
+            'memo'       => "これはサンプルデータです。自由に削除してOKです！\n\nこのアプリでは、タイトル・材料・タグでレシピを検索できます。\nサムネイル一覧ページの＋ボタンから新しいレシピを追加してみてください。",
+        ]);
+
+        $recipe->tags()->attach($tag->id);
+
+        $ingredients = [
+            ['name' => '好きな食材', 'quantity' => '適量'],
+            ['name' => 'お気に入りの調味料', 'quantity' => '少々'],
+        ];
+
+        foreach ($ingredients as $item) {
+            $ingredient = \App\Models\Ingredient::firstOrCreate(['name' => $item['name']]);
+            \App\Models\RecipeIngredient::create([
+                'recipe_id'   => $recipe->id,
+                'ingredient_id' => $ingredient->id,
+                'quantity'    => $item['quantity'],
+            ]);
+        }
+
+        $steps = [
+            '右上の太陽アイコンのボタンはスリープ防止ボタンです',
+            'サムネイル一覧ページの＋ボタンからレシピを追加できます',
+            '検索バーでタイトル・材料・タグを検索できます',
+            'このサンプルレシピは削除してOKです！',
+        ];
+
+        foreach ($steps as $index => $description) {
+            \App\Models\Step::create([
+                'recipe_id'   => $recipe->id,
+                'step_number' => $index + 1,
+                'description' => $description,
+            ]);
+        }
     }
 }
