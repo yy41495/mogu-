@@ -92,7 +92,7 @@
         <label for="source_url">参考URL・引用元</label>
         <p>URLの場合、「取得」ボタンからタイトル・サムネイルを自動取得できます</p>
         <div class="url-input-group">
-            <input type="url" id="source_url" name="source_url" placeholder="https://...">
+            <input type="text" id="source_url" name="source_url" placeholder="https://...">
             <button type="button" id="ogpFetchBtn" class="ogp-fetch-btn">取得</button>
         </div>
     </div>
