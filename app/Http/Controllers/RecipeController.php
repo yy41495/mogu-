@@ -11,6 +11,7 @@ use App\Models\Step;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Http\Requests\StoreRecipeRequest;
 
 class RecipeController extends Controller
 {
@@ -50,7 +51,10 @@ class RecipeController extends Controller
         }
 
         // 新しい順に並べる
-        $recipes = $query->orderBy('created_at', 'desc')->get();
+        //PC版は20件、スマホ版は15件で表示
+        $isMobile = preg_match('/iPhone|Android|Mobile/i', request()->header('User-Agent'));
+        $perPage = $isMobile ? 15 : 20;
+        $recipes = $query->orderBy('created_at', 'desc')->paginate($perPage);
 
         // 全てのタグを取得（フィルター用）
         $allTags = Tag::all();
@@ -71,23 +75,10 @@ class RecipeController extends Controller
     /**
      * レシピを保存
      */
-    public function store(Request $request)
+    public function store(StoreRecipeRequest $request)
     {
         // バリデーション（入力チェック）
-        $validated = $request->validate([
-            'title'              => 'required|max:255',
-            'memo'               => 'nullable',
-            'source_url'         => 'nullable|string|max:255',
-            'image'              => 'nullable|image|max:5120',
-            'ogp_image_url'      => 'nullable|url',
-            'tags'               => 'nullable|array',
-            'new_tags'           => 'nullable|array',
-            'new_tags.*'         => 'nullable|string|max:50',
-            'new_tag_colors'     => 'nullable|array',
-            'new_tag_colors.*'   => 'nullable|string|max:7', // #ffffff 形式
-            'ingredients'        => 'nullable|array',
-            'steps'              => 'nullable|array',
-        ]);
+        $validated = $request->validated();
 
         //レシピ保存後に材料保存中でエラーが起きると、レシピだけが存在して材料がない中途半端なデータが残ってしまう。
         //それを防ぐためにtransactionを使用して、レシピ保存、材料保存、手順保存を一度に行う。
@@ -176,7 +167,7 @@ class RecipeController extends Controller
     /**
      * レシピを更新
      */
-    public function update(Request $request, $id)
+    public function update(StoreRecipeRequest $request, $id)
     {
         // レシピを取得（ログインユーザーのものだけ）
         $recipe = Recipe::where('id', $id)
@@ -184,20 +175,7 @@ class RecipeController extends Controller
             ->firstOrFail();
 
         // バリデーション
-        $validated = $request->validate([
-            'title'              => 'required|max:255',
-            'memo'               => 'nullable',
-            'source_url'         => 'nullable|string|max:255',
-            'image'              => 'nullable|image|max:5120',
-            'ogp_image_url'      => 'nullable|url',
-            'tags'               => 'nullable|array',
-            'new_tags'           => 'nullable|array',
-            'new_tags.*'         => 'nullable|string|max:50',
-            'new_tag_colors'     => 'nullable|array',
-            'new_tag_colors.*'   => 'nullable|string|max:7',
-            'ingredients'        => 'nullable|array',
-            'steps'              => 'nullable|array',
-        ]);
+        $validated = $request->validated();
 
 
         // ↓ こっちもDB::transaction() で囲む

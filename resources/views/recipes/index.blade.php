@@ -3,29 +3,29 @@
 @section('title', 'mogu+ | レシピ一覧')
 
 @section('css')
-    @vite(['resources/css/recipes.css'])
+@vite(['resources/css/recipes.css'])
 @endsection
 
 {{-- ヘッダー左：ロゴ画像 --}}
 @section('header-left')
-    <img src="/images/logo-icon.png" alt="mogu+" class="logo-icon-img">
-    <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
+<img src="/images/logo-icon.png" alt="mogu+" class="logo-icon-img">
+<img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
 @endsection
 
 {{-- ヘッダー右：ユーザーアイコン --}}
 @section('header-right')
-    <div class="user-menu-wrapper">
-        <button type="button" class="user-icon-btn" id="userIconBtn">
-            <i data-lucide="circle-user-round"></i>
-        </button>
-        <div id="userMenu" class="user-menu hidden">
-            <div class="user-name">{{ Auth::user()->name }}</div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn">ログアウト</button>
-            </form>
-        </div>
+<div class="user-menu-wrapper">
+    <button type="button" class="user-icon-btn" id="userIconBtn">
+        <i data-lucide="circle-user-round"></i>
+    </button>
+    <div id="userMenu" class="user-menu hidden">
+        <div class="user-name">{{ Auth::user()->name }}</div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-btn">ログアウト</button>
+        </form>
     </div>
+</div>
 @endsection
 
 @section('content')
@@ -101,6 +101,11 @@
     </div>
     @endif
 
+    <!-- ページネーション -->
+    <div class="pagination-wrapper">
+        {{ $recipes->links() }}
+    </div>
+
     <!-- 追加ボタン -->
     <a href="{{ route('recipes.create') }}" class="add-button">
         <i data-lucide="plus"></i>
@@ -109,5 +114,5 @@
 @endsection
 
 @section('scripts')
-    @vite(['resources/js/index.js'])
+@vite(['resources/js/index.js'])
 @endsection
