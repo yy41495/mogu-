@@ -3,7 +3,7 @@
 ======================================== */
 
 body {
-    padding-bottom: 80px;
+    padding-bottom: 60px;
 }
 
 /* ========================================
@@ -314,4 +314,66 @@ body {
 
 .apply-btn:hover {
     background-color: #ff962d;
+}
+
+/* ========================================
+   フッター
+======================================== */
+.recipe-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 8px 20px 12px;
+    background-color: #fff;
+    border-top: 2px solid #ee7800;
+    z-index: 50;
+    gap: 12px;
+}
+
+.pagination-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+    flex: 1;
+}
+
+.page-btn {
+    min-width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 0.5px solid #ddd;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    color: #666;
+    background-color: #fff;
+    text-decoration: none;
+    padding: 0 6px;
+}
+
+.page-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.page-btn.disabled {
+    opacity: 0.3;
+    cursor: default;
+    pointer-events: none;
+}
+
+.page-info {
+    font-size: 13px;
+    color: #666;
+    padding: 0 6px;
+    white-space: nowrap;
+}
+
+.page-current {
+    color: #ee7800;
+    font-weight: 600;
 }
