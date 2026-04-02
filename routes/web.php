@@ -5,9 +5,9 @@ use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\RecipeController;
 use App\Http\Controllers\OgpController;
 
-// 既存のルート
+// 既存のルート(loginページに変更)
 Route::get('/', function () {
-    return view('welcome');
+    return view('login');
 });
 
 // Googleログイン

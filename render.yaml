@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: mogu-plus
+    runtime: docker
+    plan: free
+    envVars:
+      - key: APP_NAME
+        value: mogu+
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: DB_CONNECTION
+        value: pgsql
+      - key: DB_HOST
+        fromDatabase:
+          name: mogu-plus-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: mogu-plus-db
+          property: port
+      - key: DB_DATABASE
+        fromDatabase:
+          name: mogu-plus-db
+          property: database
+      - key: DB_USERNAME
+        fromDatabase:
+          name: mogu-plus-db
+          property: user
+      - key: DB_PASSWORD
+        fromDatabase:
+          name: mogu-plus-db
+          property: password
+      - key: SESSION_DRIVER
+        value: file
+      - key: CACHE_STORE
+        value: file
+      - key: FILESYSTEM_DISK
+        value: local
+
+databases:
+  - name: mogu-plus-db
+    plan: free
+    databaseName: moguplusdb
+    user: moguplus

@@ -76,7 +76,7 @@ class RecipeController extends Controller
         $validated = $request->validate([
             'title'              => 'required|max:255',
             'memo'               => 'nullable',
-            'source_url'         => 'nullable|url',
+            'source_url'         => 'nullable|string|max:255',
             'image'              => 'nullable|image|max:5120',
             'ogp_image_url'      => 'nullable|url',
             'tags'               => 'nullable|array',
@@ -178,7 +178,7 @@ class RecipeController extends Controller
         $validated = $request->validate([
             'title'              => 'required|max:255',
             'memo'               => 'nullable',
-            'source_url'         => 'nullable|url',
+            'source_url'         => 'nullable|string|max:255',
             'image'              => 'nullable|image|max:5120',
             'ogp_image_url'      => 'nullable|url',
             'tags'               => 'nullable|array',
