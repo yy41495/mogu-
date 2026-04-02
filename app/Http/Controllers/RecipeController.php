@@ -9,6 +9,7 @@ use App\Models\Ingredient;
 use App\Models\RecipeIngredient;
 use App\Models\Step;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class RecipeController extends Controller
@@ -88,46 +89,54 @@ class RecipeController extends Controller
             'steps'              => 'nullable|array',
         ]);
 
-        // レシピを作成
-        $recipe = Recipe::create([
-            'user_id' => Auth::id(),
-            'title' => $validated['title'],
-            'memo' => $validated['memo'] ?? null,
-            'source_url' => $validated['source_url'] ?? null,
-        ]);
+        //レシピ保存後に材料保存中でエラーが起きると、レシピだけが存在して材料がない中途半端なデータが残ってしまう。
+        //それを防ぐためにtransactionを使用して、レシピ保存、材料保存、手順保存を一度に行う。
+        $recipe = DB::transaction(function () use ($request, $validated) {
 
-        // 画像がアップロードされていたら Cloudinary に保存
-        if ($request->hasFile('image')) {
-            $uploadedFile = $request->file('image');
-            $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
-                'folder' => 'mogu-plus/recipes',
-                'transformation' => [
-                    'width' => 1200,
-                    'height' => 1200,
-                    'crop' => 'limit',
-                    'quality' => 'auto',
-                    'fetch_format' => 'auto'
-                ]
+            // レシピを作成
+            $recipe = Recipe::create([
+                'user_id' => Auth::id(),
+                'title' => $validated['title'],
+                'memo' => $validated['memo'] ?? null,
+                'source_url' => $validated['source_url'] ?? null,
             ]);
 
-            $recipe->image_path = $uploadResult->getSecurePath();
-            $recipe->save();
-        }
+            // 画像がアップロードされていたら Cloudinary に保存
+            if ($request->hasFile('image')) {
+                $uploadedFile = $request->file('image');
+                $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
+                    'folder' => 'mogu-plus/recipes',
+                    'transformation' => [
+                        'width' => 1200,
+                        'height' => 1200,
+                        'crop' => 'limit',
+                        'quality' => 'auto',
+                        'fetch_format' => 'auto'
+                    ]
+                ]);
 
-        // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
-        if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
-            $recipe->image_path = $request->input('ogp_image_url');
-            $recipe->save();
-        }
+                $recipe->image_path = $uploadResult->getSecurePath();
+                $recipe->save();
+            }
 
-        // タグを保存
-        $this->saveTags($recipe, $request);
+            // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
+            if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
+                $recipe->image_path = $request->input('ogp_image_url');
+                $recipe->save();
+            }
 
-        // 材料を保存
-        $this->saveIngredients($recipe, $request);
+            // タグを保存
+            $this->saveTags($recipe, $validated);
 
-        // 手順を保存
-        $this->saveSteps($recipe, $request);
+            // 材料を保存
+            $this->saveIngredients($recipe, $validated);
+
+            // 手順を保存
+            $this->saveSteps($recipe, $validated);
+
+            return $recipe; // ← transactionの外に$recipeを渡すためにreturnが必要
+            //現状必要ないけど将来必要な時のために一応記述しておく
+        });
 
         // レシピ一覧ページにリダイレクト
         return redirect()->route('recipes.index')->with('success', 'レシピを追加しました！');
@@ -190,55 +199,60 @@ class RecipeController extends Controller
             'steps'              => 'nullable|array',
         ]);
 
-        // レシピを更新
-        $recipe->update([
-            'title' => $validated['title'],
-            'memo' => $validated['memo'] ?? null,
-            'source_url' => $validated['source_url'] ?? null,
-        ]);
 
-        // 画像がアップロードされていたら Cloudinary に保存
-        if ($request->hasFile('image')) {
-            // 古い画像を Cloudinary から削除
-            if ($recipe->image_path && str_contains($recipe->image_path, 'cloudinary.com')) {
-                $publicId = $this->getPublicIdFromUrl($recipe->image_path);
-                if ($publicId) {
-                    Cloudinary::destroy($publicId);
-                }
-            }
-
-            // 新しい画像をアップロード
-            $uploadedFile = $request->file('image');
-            $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
-                'folder' => 'mogu-plus/recipes',
-                'transformation' => [
-                    'width' => 1200,
-                    'height' => 1200,
-                    'crop' => 'limit',
-                    'quality' => 'auto',
-                    'fetch_format' => 'auto'
-                ]
+        // ↓ こっちもDB::transaction() で囲む
+        DB::transaction(function () use ($request, $validated, $recipe) {
+            // レシピを更新
+            $recipe->update([
+                'title' => $validated['title'],
+                'memo' => $validated['memo'] ?? null,
+                'source_url' => $validated['source_url'] ?? null,
             ]);
 
-            $recipe->image_path = $uploadResult->getSecurePath();
-            $recipe->save();
-        }
+            // 画像がアップロードされていたら Cloudinary に保存
+            if ($request->hasFile('image')) {
+                // 古い画像を Cloudinary から削除
+                if ($recipe->image_path && str_contains($recipe->image_path, 'cloudinary.com')) {
+                    $publicId = $this->getPublicIdFromUrl($recipe->image_path);
+                    if ($publicId) {
+                        Cloudinary::destroy($publicId);
+                    }
+                }
 
-        // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
-        if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
-            $recipe->image_path = $request->input('ogp_image_url');
-            $recipe->save();
-        }
+                // 新しい画像をアップロード
+                $uploadedFile = $request->file('image');
+                $uploadResult = Cloudinary::upload($uploadedFile->getRealPath(), [
+                    'folder' => 'mogu-plus/recipes',
+                    'transformation' => [
+                        'width' => 1200,
+                        'height' => 1200,
+                        'crop' => 'limit',
+                        'quality' => 'auto',
+                        'fetch_format' => 'auto'
+                    ]
+                ]);
 
-        // 既存のタグ・材料・手順を削除
-        $recipe->tags()->detach();
-        $recipe->recipeIngredients()->delete();
-        $recipe->steps()->delete();
+                $recipe->image_path = $uploadResult->getSecurePath();
+                $recipe->save();
+            }
 
-        // 新しいデータを保存
-        $this->saveTags($recipe, $request);
-        $this->saveIngredients($recipe, $request);
-        $this->saveSteps($recipe, $request);
+            // OGP画像URLが送られてきたら保存（画像アップロードがない場合のみ）
+            if (!$request->hasFile('image') && $request->filled('ogp_image_url')) {
+                $recipe->image_path = $request->input('ogp_image_url');
+                $recipe->save();
+            }
+
+            // 既存のタグ・材料・手順を削除
+            $recipe->tags()->detach();
+            $recipe->recipeIngredients()->delete();
+            $recipe->steps()->delete();
+
+            // 新しいデータを保存
+            $this->saveTags($recipe, $validated);
+            $this->saveIngredients($recipe, $validated);
+            $this->saveSteps($recipe, $validated);
+        });
+        // ↑ DB::transaction() で囲む（ここまで）
 
         // レシピ詳細ページにリダイレクト
         return redirect()->route('recipes.show', $recipe->id)->with('success', 'レシピを更新しました！');
@@ -272,20 +286,20 @@ class RecipeController extends Controller
     /**
      * タグを保存
      */
-    private function saveTags($recipe, $request)
+    private function saveTags($recipe, $validated)
     {
         $tagIds = [];
 
         // 既存タグ
-        if ($request->has('tags')) {
-            $tagIds = array_merge($tagIds, $request->tags);
+        if (!empty($validated['tags'])) {
+            $tagIds = array_merge($tagIds, $validated['tags']);
         }
 
         // 新規タグ
-        if ($request->has('new_tags')) {
-            foreach ($request->new_tags as $index => $tagName) {
+        if (!empty($validated['new_tags'])) {
+            foreach ($validated['new_tags'] as $index => $tagName) {
                 // 色情報も取得（JavaScriptから送信される）
-                $color = $request->input('new_tag_colors.' . $index, '#e0e0e0');
+                $color = $validated['new_tag_colors'][$index] ?? '#e0e0e0';
 
                 // 同じ名前のタグがあるか確認
                 $tag = Tag::firstOrCreate(
@@ -305,13 +319,13 @@ class RecipeController extends Controller
     /**
      * 材料を保存
      */
-    private function saveIngredients($recipe, $request)
+    private function saveIngredients($recipe, $validated)
     {
-        if (!$request->has('ingredients')) {
+        if (empty($validated['ingredients'])) {
             return;
         }
 
-        foreach ($request->ingredients as $ingredientData) {
+        foreach ($validated['ingredients'] as $ingredientData) {
             // 空の材料はスキップ
             if (empty($ingredientData['name'])) {
                 continue;
@@ -323,25 +337,31 @@ class RecipeController extends Controller
             ]);
 
             // レシピと材料を紐付け
-            RecipeIngredient::create([
-                'recipe_id' => $recipe->id,
-                'ingredient_id' => $ingredient->id,
-                'quantity' => $ingredientData['quantity'] ?? null,
-            ]);
+            RecipeIngredient::updateOrCreate(
+                // 「このrecipe_idとingredient_idの組み合わせ」を検索
+                [
+                    'recipe_id'     => $recipe->id,
+                    'ingredient_id' => $ingredient->id,
+                ],
+                // あれば量を更新、なければ新規作成
+                [
+                    'quantity' => $ingredientData['quantity'] ?? null,
+                ]
+            );
         }
     }
 
     /**
      * 手順を保存
      */
-    private function saveSteps($recipe, $request)
+    private function saveSteps($recipe, $validated)
     {
-        if (!$request->has('steps')) {
+        if (empty($validated['steps'])) {
             return;
         }
 
         $stepNumber = 1;
-        foreach ($request->steps as $stepData) {
+        foreach ($validated['steps'] as $stepData) {
             // 空の手順はスキップ
             if (empty($stepData['description'])) {
                 continue;
