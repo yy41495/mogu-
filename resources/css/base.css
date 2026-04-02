@@ -103,59 +103,6 @@ main {
 }
 
 /* ========================================
-   追加ボタン（＋）
-======================================== */
-
-/* .add-button {
-    position: fixed;
-    bottom: 24px;
-    right: 50%;
-    transform: translateX(50%);
-    width: 100px;
-    height: 100px;
-    background-color: #ee7800;
-    border-radius: 50%;
-    border: 5px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    cursor: pointer;
-    z-index: 50;
-    text-decoration: none;
-}
-
-.add-button:hover {
-    background-color: #ff962d;
-} */
-.add-button {
-    width: 44px;
-    height: 44px;
-    background-color: #ee7800;
-    border-radius: 50%;
-    border: 3px solid white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    text-decoration: none;
-    flex-shrink: 0;
-}
-
-.add-button:hover {
-    background-color: #ff962d;
-}
-
-.add-button svg {
-    width: 24px;
-    height: 24px;
-    color: white;
-}
-
-
-
-/* ========================================
    アイコンサイズ管理（lucide icons）
 ======================================== */
 
@@ -206,14 +153,19 @@ main {
 }
 
 .add-button svg {
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 55px;
     color: white;
 }
 
 .sleep-prevent-btn svg {
     width: 40px;
     height: 40px;
+}
+
+.page-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 /* ========================================
