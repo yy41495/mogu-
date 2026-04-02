@@ -104,59 +104,50 @@
 
 
     <div class="recipe-footer">
-        <div class="recipe-footer-inner">
-            <!-- 追加ボタン -->
-            <a href="{{ route('recipes.create') }}" class="add-button">
-                <i data-lucide="plus"></i>
-            </a>
-            <!-- ページネーション -->
-            <div class="pagination-wrapper">
-                @if($recipes->lastPage() > 1)
-                <!-- 5ページ戻る -->
-                @if($recipes->currentPage() > 1)
-                <a href="{{ $recipes->url(max(1, $recipes->currentPage() - 5)) }}" class="page-btn">
-                    <i data-lucide="chevrons-left"></i>
-                </a>
+        <!-- 追加ボタン -->
+        <a href="{{ route('recipes.create') }}" class="add-button">
+            <i data-lucide="plus"></i>
+        </a>
+        <!-- ページネーション -->
+        <div class="pagination-wrapper">
+            @if($recipes->lastPage() > 1)
+
+            <!-- 5ページ戻る -->
+            @if($recipes->currentPage() > 1)
+            <a href="{{ $recipes->url(max(1, $recipes->currentPage() - 5)) }}" class="page-btn">«</a>
+            @else
+            <span class="page-btn disabled">«</span>
+            @endif
+
+            <!-- 1ページ戻る -->
+            @if($recipes->currentPage() > 1)
+            <a href="{{ $recipes->previousPageUrl() }}" class="page-btn">‹</a>
+            @else
+            <span class="page-btn disabled">‹</span>
+            @endif
+
+            <!-- 現在/全体 -->
+            <span class="page-info">
+                <span class="page-current">{{ $recipes->currentPage() }}</span>
+                <span class="page-sep">/</span>
+                <span class="page-total">{{ $recipes->lastPage() }}</span>
+            </span>
+
+            <!-- 1ページ進む -->
+            @if($recipes->hasMorePages())
+            <a href="{{ $recipes->nextPageUrl() }}" class="page-btn">›</a>
+            @else
+            <span class="page-btn disabled">›</span>
+            @endif
+
+            <!-- 5ページ進む -->
+            @if($recipes->currentPage() < $recipes->lastPage())
+                <a href="{{ $recipes->url(min($recipes->lastPage(), $recipes->currentPage() + 5)) }}" class="page-btn">»</a>
                 @else
-                <span class="page-btn disabled"><i data-lucide="chevrons-left"></i></span>
+                <span class="page-btn disabled">»</span>
                 @endif
 
-                <!-- 1ページ戻る -->
-                @if($recipes->currentPage() > 1)
-                <a href="{{ $recipes->previousPageUrl() }}" class="page-btn">
-                    <i data-lucide="chevron-left"></i>
-                </a>
-                @else
-                <span class="page-btn disabled"><i data-lucide="chevron-left"></i></span>
                 @endif
-
-                <!-- 現在/全体 -->
-                <span class="page-info">
-                    <span class="page-current">{{ $recipes->currentPage() }}</span>
-                    <span class="page-sep">/</span>
-                    <span class="page-total">{{ $recipes->lastPage() }}</span>
-                </span>
-
-                <!-- 1ページ進む -->
-                @if($recipes->hasMorePages())
-                <a href="{{ $recipes->nextPageUrl() }}" class="page-btn">
-                    <i data-lucide="chevron-right"></i>
-                </a>
-                @else
-                <span class="page-btn disabled"><i data-lucide="chevron-right"></i></span>
-                @endif
-
-                <!-- 5ページ進む -->
-                @if($recipes->currentPage() < $recipes->lastPage())
-                    <a href="{{ $recipes->url(min($recipes->lastPage(), $recipes->currentPage() + 5)) }}" class="page-btn">
-                        <i data-lucide="chevrons-right"></i>
-                    </a>
-                    @else
-                    <span class="page-btn disabled"><i data-lucide="chevrons-right"></i></span>
-                    @endif
-
-                    @endif
-            </div>
         </div>
     </div>
 
