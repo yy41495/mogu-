@@ -106,7 +106,7 @@ main {
    追加ボタン（＋）
 ======================================== */
 
-.add-button {
+/* .add-button {
     position: fixed;
     bottom: 24px;
     right: 50%;
@@ -127,28 +127,94 @@ main {
 
 .add-button:hover {
     background-color: #ff962d;
+} */
+.add-button {
+    width: 44px;
+    height: 44px;
+    background-color: #ee7800;
+    border-radius: 50%;
+    border: 3px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    text-decoration: none;
+    flex-shrink: 0;
 }
+
+.add-button:hover {
+    background-color: #ff962d;
+}
+
+.add-button svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+}
+
+
 
 /* ========================================
    アイコンサイズ管理（lucide icons）
 ======================================== */
 
 /* サイズ */
-.icon-sm  { width: 18px; height: 18px; }
-.icon-md  { width: 24px; height: 24px; }
-.icon-lg  { width: 40px; height: 40px; }
-.icon-xl  { width: 50px; height: 50px; }
+.icon-sm {
+    width: 18px;
+    height: 18px;
+}
+
+.icon-md {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-lg {
+    width: 40px;
+    height: 40px;
+}
+
+.icon-xl {
+    width: 50px;
+    height: 50px;
+}
 
 /* 色 */
-.icon-white { color: white; }
-.icon-gray  { color: #666; }
-.icon-orange { color: #ee7800; }
+.icon-white {
+    color: white;
+}
+
+.icon-gray {
+    color: #666;
+}
+
+.icon-orange {
+    color: #ee7800;
+}
 
 /* 個別指定（クラス名で使う箇所が決まっているもの） */
-.user-icon-btn svg { width: 40px; height: 40px; color: white; }
-.back-link svg     { width: 18px; height: 18px; }
-.add-button svg    { width: 70px; height: 70px; color: white; }
-.sleep-prevent-btn svg { width: 40px; height: 40px; }
+.user-icon-btn svg {
+    width: 40px;
+    height: 40px;
+    color: white;
+}
+
+.back-link svg {
+    width: 18px;
+    height: 18px;
+}
+
+.add-button svg {
+    width: 70px;
+    height: 70px;
+    color: white;
+}
+
+.sleep-prevent-btn svg {
+    width: 40px;
+    height: 40px;
+}
 
 /* ========================================
    ユーティリティ

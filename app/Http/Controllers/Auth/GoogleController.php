@@ -51,7 +51,8 @@ class GoogleController extends Controller
         } catch (\Exception $e) {
             // eはエラー情報、将来的に必要な場合に備えて一応入れてる
             // エラーが起きたらログイン画面に戻る
-            return redirect('/login')->with('error', 'ログインに失敗しました');
+            // return redirect('/login')->with('error', 'ログインに失敗しました');
+            return redirect('/login')->with('error', 'ログインに失敗しました：' . $e->getMessage());
         }
     }
 
@@ -77,14 +78,14 @@ class GoogleController extends Controller
         $recipe = \App\Models\Recipe::create([
             'user_id'    => $user->id,
             'title'      => 'README（サンプルレシピ）',
-            'memo'       => "これはサンプルデータです。自由に削除してOKです！\n\nこのアプリでは、タイトル・材料・タグでレシピを検索できます。\nサムネイル一覧ページの＋ボタンから新しいレシピを追加してみてください。",
+            'memo'       => "これはサンプルデータです。自由に削除してOKです！\n\nこのアプリでは、タイトル・材料・タグでレシピを検索できます。\nサムネイル一覧ページの＋ボタンから新しいレシピを追加してみてください。\n材料名に同じものは入れられないので、もし2回書く必要がある場合は表記を変えてください。（例：「醤油（下味用）、醤油（味付け）など）",
         ]);
 
         $recipe->tags()->attach($tag->id);
 
         $ingredients = [
-            ['name' => '好きな食材', 'quantity' => '適量'],
-            ['name' => 'お気に入りの調味料', 'quantity' => '少々'],
+            ['name' => '食材', 'quantity' => '適量'],
+            ['name' => '調味料', 'quantity' => '少々'],
         ];
 
         foreach ($ingredients as $item) {

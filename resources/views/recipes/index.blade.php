@@ -3,29 +3,29 @@
 @section('title', 'mogu+ | レシピ一覧')
 
 @section('css')
-    @vite(['resources/css/recipes.css'])
+@vite(['resources/css/recipes.css'])
 @endsection
 
 {{-- ヘッダー左：ロゴ画像 --}}
 @section('header-left')
-    <img src="/images/logo-icon.png" alt="mogu+" class="logo-icon-img">
-    <img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
+<img src="/images/logo-icon.png" alt="mogu+" class="logo-icon-img">
+<img src="/images/logo-text.png" alt="mogu+" class="logo-text-img">
 @endsection
 
 {{-- ヘッダー右：ユーザーアイコン --}}
 @section('header-right')
-    <div class="user-menu-wrapper">
-        <button type="button" class="user-icon-btn" id="userIconBtn">
-            <i data-lucide="circle-user-round"></i>
-        </button>
-        <div id="userMenu" class="user-menu hidden">
-            <div class="user-name">{{ Auth::user()->name }}</div>
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout-btn">ログアウト</button>
-            </form>
-        </div>
+<div class="user-menu-wrapper">
+    <button type="button" class="user-icon-btn" id="userIconBtn">
+        <i data-lucide="circle-user-round"></i>
+    </button>
+    <div id="userMenu" class="user-menu hidden">
+        <div class="user-name">{{ Auth::user()->name }}</div>
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
+            <button type="submit" class="logout-btn">ログアウト</button>
+        </form>
     </div>
+</div>
 @endsection
 
 @section('content')
@@ -101,13 +101,59 @@
     </div>
     @endif
 
-    <!-- 追加ボタン -->
-    <a href="{{ route('recipes.create') }}" class="add-button">
-        <i data-lucide="plus"></i>
-    </a>
+
+
+    <div class="recipe-footer">
+        <!-- 追加ボタン -->
+        <a href="{{ route('recipes.create') }}" class="add-button">
+            <i data-lucide="plus"></i>
+        </a>
+        <!-- ページネーション -->
+        <div class="pagination-wrapper">
+            @if($recipes->lastPage() > 1)
+
+            <!-- 5ページ戻る -->
+            @if($recipes->currentPage() > 1)
+            <a href="{{ $recipes->url(max(1, $recipes->currentPage() - 5)) }}" class="page-btn">«</a>
+            @else
+            <span class="page-btn disabled">«</span>
+            @endif
+
+            <!-- 1ページ戻る -->
+            @if($recipes->currentPage() > 1)
+            <a href="{{ $recipes->previousPageUrl() }}" class="page-btn">‹</a>
+            @else
+            <span class="page-btn disabled">‹</span>
+            @endif
+
+            <!-- 現在/全体 -->
+            <span class="page-info">
+                <span class="page-current">{{ $recipes->currentPage() }}</span>
+                <span class="page-sep">/</span>
+                <span class="page-total">{{ $recipes->lastPage() }}</span>
+            </span>
+
+            <!-- 1ページ進む -->
+            @if($recipes->hasMorePages())
+            <a href="{{ $recipes->nextPageUrl() }}" class="page-btn">›</a>
+            @else
+            <span class="page-btn disabled">›</span>
+            @endif
+
+            <!-- 5ページ進む -->
+            @if($recipes->currentPage() < $recipes->lastPage())
+                <a href="{{ $recipes->url(min($recipes->lastPage(), $recipes->currentPage() + 5)) }}" class="page-btn">»</a>
+                @else
+                <span class="page-btn disabled">»</span>
+                @endif
+
+                @endif
+        </div>
+    </div>
+
 </main>
 @endsection
 
 @section('scripts')
-    @vite(['resources/js/index.js'])
+@vite(['resources/js/index.js'])
 @endsection

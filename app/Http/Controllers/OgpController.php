@@ -28,8 +28,12 @@ class OgpController extends Controller
 
         // localhost や内部IPアドレスをブロック
         $host = parse_url($url, PHP_URL_HOST);
-        $blockedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '::1'];
-        if (in_array($host, $blockedHosts)) {
+
+        // ホスト名をIPアドレスに変換する
+        $ip = gethostbyname($host);
+
+        // プライベートIP・予約済みIP帯をブロック
+        if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) === false) {
             return response()->json(['error' => '無効なURLです'], 400);
         }
 
