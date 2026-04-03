@@ -51,8 +51,8 @@ class GoogleController extends Controller
         } catch (\Exception $e) {
             // eはエラー情報、将来的に必要な場合に備えて一応入れてる
             // エラーが起きたらログイン画面に戻る
-            // return redirect('/login')->with('error', 'ログインに失敗しました');
-            return redirect('/login')->with('error', 'ログインに失敗しました：' . $e->getMessage());
+            return redirect('/login')->with('error', 'ログインに失敗しました');
+            // return redirect('/login')->with('error', 'ログインに失敗しました：' . $e->getMessage());
         }
     }
 

@@ -111,7 +111,7 @@
             </a>
             <!-- ページネーション -->
             <div class="pagination-wrapper">
-                @if($recipes->lastPage() > 1)
+            @if(true)
                 <!-- 5ページ戻る -->
                 @if($recipes->currentPage() > 1)
                 <a href="{{ $recipes->url(max(1, $recipes->currentPage() - 5)) }}" class="page-btn">
