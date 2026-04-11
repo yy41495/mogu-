@@ -19,11 +19,9 @@
     <!-- ヘッダー -->
     <div class="header">
         <div class="header-inner">
-            <!-- 左側：各ページが埋める（ロゴ or 戻るリンク） -->
             <div class="header-left">
                 @yield('header-left')
             </div>
-            <!-- 右側：各ページが埋める（ユーザーアイコン or ページタイトル） -->
             @yield('header-right')
         </div>
     </div>

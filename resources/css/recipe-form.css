@@ -22,7 +22,7 @@ body {
     display: block;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #333;
+    color: #593527;
 }
 
 .required {
@@ -120,7 +120,7 @@ textarea {
 
 .tag-select-btn {
     padding: 12px 40px;
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     border: none;
     border-radius: 8px;
@@ -242,7 +242,7 @@ textarea {
 .step-number {
     width: 30px;
     height: 30px;
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -263,7 +263,7 @@ textarea {
    参考URL・取得ボタン
 ======================================== */
 .form-group p {
-    color: #333;
+    color: #593527;
     font-size: 13px;
     margin-bottom: 10px;
 }
@@ -279,7 +279,7 @@ textarea {
 
 .ogp-fetch-btn {
     padding: 12px 20px;
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     border: none;
     border-radius: 8px;
@@ -297,7 +297,7 @@ textarea {
 .save-btn {
     width: 100%;
     padding: 16px;
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     border: none;
     border-radius: 8px;

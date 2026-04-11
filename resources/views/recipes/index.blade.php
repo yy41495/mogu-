@@ -83,7 +83,7 @@
 
     <!-- レシピ一覧 または 空の状態 -->
     @if($recipes->count() > 0)
-    <div class="recipe-grid">
+    <div class="recipe-grid gap-2 md:gap-4">
         @foreach($recipes as $recipe)
         <a href="{{ route('recipes.show', $recipe->id) }}" class="recipe-card">
             @if($recipe->image_path)

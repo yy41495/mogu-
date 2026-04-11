@@ -13,8 +13,7 @@ body {
     right: 40px;
     width: 60px;
     height: 60px;
-    background-color: #f5f5f5;
-    border: 2px solid #ddd;
+    background-color: #fff1e3;
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
@@ -23,7 +22,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #D97904;
+    color: #ee7800;
 }
 
 .sleep-prevent-btn:hover {
@@ -56,7 +55,7 @@ body {
     font-size: 28px;
     font-weight: 600;
     margin-bottom: 16px;
-    color: #333;
+    color: #593527;
 }
 
 /* タグ */
@@ -86,7 +85,7 @@ body {
     background-color: #fff1e3;
     border-radius: 4px;
     margin-bottom: 12px;
-    color: #333;
+    color: #593527;
 }
 
 /* メモ */
@@ -94,7 +93,7 @@ body {
     padding: 12px;
     border-radius: 8px;
     line-height: 1.6;
-    color: #333;
+    color: #593527;
 }
 
 /* 材料テーブル */
@@ -113,12 +112,12 @@ body {
 
 .ingredient-name {
     font-weight: 500;
-    color: #333;
+    color: #593527;
 }
 
 .ingredient-quantity {
     text-align: right;
-    color: #666;
+    color: #7b4b39;
     width: 100px;
 }
 
@@ -140,7 +139,7 @@ body {
     min-width: 32px;
     width: 32px;
     height: 32px;
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -155,22 +154,21 @@ body {
     flex: 1;
     padding-top: 6px;
     line-height: 1.6;
-    color: #333;
+    color: #593527;
 }
 
 /* 参考URL */
 .source-url {
     display: inline-block;
     padding: 12px;
-    background-color: #e3f2fd;
-    border-radius: 8px;
-    color: #1976d2;
+    color: #ee7800;
+    font-weight: bold;
     text-decoration: none;
     word-break: break-all;
 }
 
 .source-url:hover {
-    background-color: #bbdefb;
+    color: #F29F05;
 }
 
 /* アクションボタン */
@@ -196,7 +194,7 @@ body {
 }
 
 .edit-btn {
-    background-color: #D97904;
+    background-color: #ee7800;
     color: white;
     display: flex;
     align-items: center;
@@ -249,7 +247,7 @@ body {
     font-size: 18px;
     font-weight: 600;
     margin-bottom: 8px;
-    color: #333;
+    color: #593527;
 }
 
 .delete-modal-desc {
@@ -271,7 +269,7 @@ body {
     border-radius: 8px;
     font-size: 15px;
     cursor: pointer;
-    color: #333;
+    color: #593527;
 }
 
 .delete-modal-cancel:hover {
