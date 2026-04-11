@@ -120,7 +120,7 @@ textarea {
 
 .tag-select-btn {
     padding: 12px 40px;
-    background-color: #ee7800;
+    background-color: #D97904;
     color: white;
     border: none;
     border-radius: 8px;
@@ -131,7 +131,7 @@ textarea {
 }
 
 .tag-select-btn:hover {
-    background-color: #ff962d;
+    background-color: #F29F05;
 }
 
 .selected-tags {
@@ -242,7 +242,7 @@ textarea {
 .step-number {
     width: 30px;
     height: 30px;
-    background-color: #ee7800;
+    background-color: #D97904;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -279,7 +279,7 @@ textarea {
 
 .ogp-fetch-btn {
     padding: 12px 20px;
-    background-color: #ee7800;
+    background-color: #D97904;
     color: white;
     border: none;
     border-radius: 8px;
@@ -290,14 +290,14 @@ textarea {
 }
 
 .ogp-fetch-btn:hover {
-    background-color: #ff962d;
+    background-color: #F29F05;
 }
 
 /* 保存ボタン */
 .save-btn {
     width: 100%;
     padding: 16px;
-    background-color: #ee7800;
+    background-color: #D97904;
     color: white;
     border: none;
     border-radius: 8px;
@@ -309,7 +309,7 @@ textarea {
 }
 
 .save-btn:hover {
-    background-color: #ff962d;
+    background-color: #F29F05;
 }
 
 /* ========================================
